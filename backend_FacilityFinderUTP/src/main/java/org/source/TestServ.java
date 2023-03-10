@@ -9,9 +9,12 @@ import com.sun.net.httpserver.HttpServer;
 
 public class TestServ {
 
+    private static final int PORT = 8000;
+
     public static void main(String[] args) throws Exception {
+
         // Crear un objeto servidor HTTP en el puerto 8000
-        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
         // Adjuntar un controlador para la ruta "/test"
         server.createContext("/test", new MyHandler());
         server.createContext("/", new MyHandlerTwo());
