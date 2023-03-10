@@ -1,23 +1,24 @@
 package org.source;
 
-import org.source.utils.LecturaCsv;
+import com.sun.net.httpserver.HttpServer;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
-import java.util.Arrays;
-import java.util.LinkedList;
+import org.source.servicios.ServicioSalonEstudiante;
+import org.source.servicios.ServicioSalonProfesor;
 
 public class Main {
-    public static void main(String[] args) {
-        //TEST PASA LOS CSV
-        LecturaCsv leerCsvAlumnos = new LecturaCsv("src/main/java/org/source/csvs/alumnos.csv");
-        LinkedList<String[]> tablaAlumnos = leerCsvAlumnos.leer();
-        tablaAlumnos.forEach((campos) -> {
-            System.out.println(Arrays.toString(campos));
-        });
+    private static final int PORT = 8000;
 
-        LecturaCsv leerCsvProfesores = new LecturaCsv("src/main/java/org/source/csvs/profesores.csv");
-        LinkedList<String[]> tablaProfesores = leerCsvProfesores.leer();
-        tablaProfesores.forEach((campos) -> {
-            System.out.println(Arrays.toString(campos));
-        });
+    public static void main(String[] args) throws IOException {
+
+        // Crear un objeto servidor HTTP en el puerto 8000
+        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        // Adjuntar un controlador para la ruta "/test"
+        server.createContext("/estudiante", new ServicioSalonEstudiante());
+        server.createContext("/profesor", new ServicioSalonProfesor());
+        // Iniciar el servidor
+        server.start();
+        System.out.println("Servidor iniciado en el puerto 8000...");
     }
 }
