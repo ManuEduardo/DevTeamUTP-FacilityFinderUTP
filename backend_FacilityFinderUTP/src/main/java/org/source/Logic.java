@@ -24,6 +24,7 @@ public class Logic {
     static public Profesor[] profesores;
 
     public static void main(String[] args) {
+
         InitLlenadoData(LINK_CSV_DOCENTE,LINK_CSV_ALUMNO);
 
         boolean isCodigoA = true;
@@ -33,14 +34,14 @@ public class Logic {
         if(isCodigoA){
             imprimirJSONRespuestaEstudiante("U90239305");
         }if (isCodigoC) {
-            imprimirJSONRespuestaMestro("C2701");
+            imprimirJSONRespuestaProfesor("C2701");
         }
 
         // Cambiarán según la respuesta, sino no se hace la busqueda.
     }
 
     public static void imprimirJSONRespuestaEstudiante(String codigoEstudiante) {
-        String[] resultado = buscarEstudiante(codigoEstudiante);
+        String[] resultado = buscarAlumno(codigoEstudiante);
 
         if (resultado != null) {
             String[] elementos = obtenerElementosCodigoAula(resultado[0]);
@@ -67,7 +68,7 @@ public class Logic {
         return elementos;
     }
 
-    public static String[] buscarEstudiante(String codigo) {
+    public static String[] buscarAlumno(String codigo) {
         for (Estudiante estudiante : estudiantes) {
             if (estudiante.getCodigo().equals(codigo)) {
                 ArrayList<String> resultado = new ArrayList<String>();
@@ -102,7 +103,7 @@ public class Logic {
         return json.toString();
     }
 
-    public static void imprimirJSONRespuestaMestro(String codigoProfesor) {
+    public static void imprimirJSONRespuestaProfesor(String codigoProfesor) {
         String[] datos = obtenerDatos(codigoProfesor);
         String[] datosSeparados = datos[0].split(",");
         String piso = datosSeparados[0];
@@ -114,30 +115,6 @@ public class Logic {
 
         System.out.println(JsonRespuestaProfesor(piso, aula, horario, curso, torre, pabellon));
     }
-
-    public static String convertirCamelCaseATitulo(String texto) { // Define una función que recibe un String y devuelve un String
-        if (texto == null) { // Verifica si el texto es nulo
-            return ""; // Devuelve una cadena vacía en ese caso
-        }
-
-        StringBuilder resultado = new StringBuilder(); // Crea un objeto StringBuilder para ir construyendo el título
-        for (int i = 0; i < texto.length(); i++) { // Itera sobre cada caracter del texto
-            char c = texto.charAt(i); // Obtiene el caracter en la posición i
-            if (Character.isUpperCase(c)) { // Si el caracter es una letra mayúscula
-                resultado.append(" "); // Agrega un espacio al título
-                resultado.append(Character.toLowerCase(c)); // Agrega el caracter en minúscula al título
-            } else {
-                resultado.append(c); // Si el caracter no es mayúscula, se agrega tal cual al título
-            }
-        }
-
-        String titulo = resultado.toString(); // Convierte el StringBuilder en un String
-        return Character.toUpperCase(titulo.charAt(1)) + titulo.substring(2)+"."; // Convierte la primera letra en mayúscula y devuelve el título
-    }
-
-
-
-
 
     public static String JsonRespuestaProfesor(String piso, String aula, String horario, String curso, String torre, String pabellon) {
         // Crear un objeto JSON vacío
@@ -197,7 +174,6 @@ public class Logic {
         // Convertir la lista de cadenas en un array y devolverlo
         return datos.toArray(new String[0]);
     }
-
 
 
     public static void InitLlenadoData(String linkCsvDocente, String linkCsvAlumno) {
@@ -277,4 +253,23 @@ public class Logic {
         return datos;
     }
 
+    public static String convertirCamelCaseATitulo(String texto) { // Define una función que recibe un String y devuelve un String
+        if (texto == null) { // Verifica si el texto es nulo
+            return ""; // Devuelve una cadena vacía en ese caso
+        }
+
+        StringBuilder resultado = new StringBuilder(); // Crea un objeto StringBuilder para ir construyendo el título
+        for (int i = 0; i < texto.length(); i++) { // Itera sobre cada caracter del texto
+            char c = texto.charAt(i); // Obtiene el caracter en la posición i
+            if (Character.isUpperCase(c)) { // Si el caracter es una letra mayúscula
+                resultado.append(" "); // Agrega un espacio al título
+                resultado.append(Character.toLowerCase(c)); // Agrega el caracter en minúscula al título
+            } else {
+                resultado.append(c); // Si el caracter no es mayúscula, se agrega tal cual al título
+            }
+        }
+
+        String titulo = resultado.toString(); // Convierte el StringBuilder en un String
+        return Character.toUpperCase(titulo.charAt(1)) + titulo.substring(2)+"."; // Convierte la primera letra en mayúscula y devuelve el título
+    }
 }
