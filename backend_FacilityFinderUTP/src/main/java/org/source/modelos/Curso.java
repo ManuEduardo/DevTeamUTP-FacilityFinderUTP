@@ -10,7 +10,15 @@ public class Curso {
         this.clases = clases;
     }
 
+    public Curso(Clase[] clases) {
+        this.clases = clases;
+    }
+
     public void setProfesor(Profesor profesor) {
         this.profesor = profesor;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }
