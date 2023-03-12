@@ -1,9 +1,9 @@
-export interface InformacionClase{
+export type InformacionClase = {
     horario: string;
     aula: string;
     torre: string;
     profesor: string;
-    cursor: string;
+    curso: string;
 }
 
 export const EmptyInformacionClase: InformacionClase = {
@@ -11,5 +11,5 @@ export const EmptyInformacionClase: InformacionClase = {
     aula: "",
     torre: "",
     profesor: "",
-    cursor: ""
+    curso: ""
 }

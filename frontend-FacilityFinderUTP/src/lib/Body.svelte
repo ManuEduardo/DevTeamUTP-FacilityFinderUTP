@@ -3,6 +3,20 @@
   import muñeco from "../assets/imagen_muñeco.png"
   import Search from "./Search.svelte";
   import DisplayInfo from "./DisplayInfo.svelte";
+  import {getInformacionClaseFetch} from '../services/informacionServices'
+  import {codigo, tipoCodigo, informacionClase} from '../store'
+
+  const getInformacionClase = async (event:Event) =>{
+    event.preventDefault();
+    if($tipoCodigo == "" || $codigo == null ){
+      alert("Rellena todos los datos")
+      return;
+    }
+    const info = await getInformacionClaseFetch($tipoCodigo, $codigo)
+    $informacionClase = info
+  }
+
+
 </script>
 
 <div class=" bg-slate-300 m-4 p-3">
@@ -18,7 +32,7 @@
     <img src={flechaAbajo} alt="flecha" class=" mt-2 mx-auto "/>
   </div>
   <div>
-    <Search/>
+    <Search getInformacionClase={getInformacionClase}/>
     <img src={muñeco} alt="imagen Muñeco" class=" w-20 mx-auto">
   </div>
   <DisplayInfo/>
