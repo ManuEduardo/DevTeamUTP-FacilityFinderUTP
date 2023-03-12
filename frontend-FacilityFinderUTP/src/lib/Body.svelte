@@ -3,8 +3,11 @@
   import muñeco from "../assets/imagen_muñeco.png"
   import Search from "./Search.svelte";
   import DisplayInfo from "./DisplayInfo.svelte";
+  import {EmptyInformacionClase} from '../models';
   import {getInformacionClaseFetch} from '../services/informacionServices'
   import {codigo, tipoCodigo, informacionClase} from '../store'
+
+  let loading = false;
 
   const getInformacionClase = async (event:Event) =>{
     event.preventDefault();
@@ -12,7 +15,9 @@
       alert("Rellena todos los datos")
       return;
     }
-    const info = await getInformacionClaseFetch($tipoCodigo, $codigo)
+    loading = true;
+    $informacionClase = EmptyInformacionClase;
+    const info = await getInformacionClaseFetch($tipoCodigo, $codigo).finally(()=>loading = false);
     $informacionClase = info
   }
 
@@ -35,10 +40,10 @@
     <Search getInformacionClase={getInformacionClase}/>
     <img src={muñeco} alt="imagen Muñeco" class=" w-20 mx-auto">
   </div>
-  <DisplayInfo/>
+  <DisplayInfo loading={loading}/>
   <div>
-    <p class=" text-center mt-16 mx-auto text-sm w-80">
-      ¿No ha sido de ayuda? comunicate con SAE (0801)19600
+    <p class=" text-center mt-12 mx-auto text-sm w-80">
+      ¿No ha sido de ayuda? comunicate con SAE <a href="tel:+(0801)19600">(0801)19600</a>
     </p>
   </div>
 </div>
