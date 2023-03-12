@@ -28,6 +28,9 @@ public class ServicioSalonEstudiante implements HttpHandler {
 
         // Establecer el tipo de contenido de la respuesta a "application/json"
         exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
         // Enviar la respuesta al cliente (Falta los casos si es que no encuentra resultados)
         if(data.get("curso")==null){
@@ -45,22 +48,21 @@ public class ServicioSalonEstudiante implements HttpHandler {
         //AQUI EMPIEZA TU MAGIA
         String profesor = "Pedro";
         String curso = "Programación Orientada a Objetos";
-        String torre = "A";
         String pabellon = "A";
         String piso = "06";
         String aula = "04";
         String horario = "10:30 - 13:30";
+        String torre = "A";
         //AQUI TERMINA TU MAGIA
 
         Map<String, Object> informacionClase = new HashMap<>();
         informacionClase.put("profesor", profesor);
         informacionClase.put("curso", curso);
-        informacionClase.put("torre", torre);
         informacionClase.put("pabellon", pabellon);
         informacionClase.put("piso", piso);
         informacionClase.put("aula", aula);
         informacionClase.put("horario", horario);
-
+        informacionClase.put("torre", torre);
         return informacionClase;
     }
 }
