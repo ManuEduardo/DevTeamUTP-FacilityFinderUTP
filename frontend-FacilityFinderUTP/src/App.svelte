@@ -1,10 +1,16 @@
 <script lang="ts">
-  import Counter from './lib/Counter.svelte'
+  import BodyApp from "./lib/Body.svelte";
+  import logoUtp from "./assets/logo_texto.png";
 </script>
 
 <main>
-  <div class="card">
-    <Counter />
+  <div class=" min-h-screen flex flex-col justify-between">
+    <div>
+      <div class=" h-2 bg-violet-700" />
+      <img src={logoUtp} alt="logo" class=" m-3" />
+    </div>
+    <BodyApp />
+    <div class=" h-2 bg-violet-700" />
   </div>
 </main>
 
