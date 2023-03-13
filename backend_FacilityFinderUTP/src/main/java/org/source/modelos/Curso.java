@@ -5,19 +5,12 @@ public class Curso {
     private String NombreProfesor;
     private Clase[] clases;
 
-    public Curso(String nombre, Profesor profesor, Clase[] clases) {
-        this.NombreCurso = nombre;
+    public Curso(String nombreCurso, String nombreProfesor, Clase[] clases) {
+        NombreCurso = nombreCurso;
+        NombreProfesor = nombreProfesor;
         this.clases = clases;
     }
 
-    public Curso(String nombre, Clase[] clases) {
-        this.NombreCurso = nombre;
-        this.clases = clases;
-    }
-
-    public Curso(Clase[] clases) {
-        this.clases = clases;
-    }
 
     public void setNombreCurso(String nombreCurso) {
         this.NombreCurso = nombreCurso;
@@ -29,6 +22,14 @@ public class Curso {
 
     public Clase[] getClases() {
         return clases;
+    }
+
+    public String getNombreProfesor() {
+        return NombreProfesor;
+    }
+
+    public void setNombreProfesor(String nombreProfesor) {
+        NombreProfesor = nombreProfesor;
     }
 
     public void setClases(Clase[] clases) {
