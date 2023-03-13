@@ -3,6 +3,8 @@ package org.source.servicios;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.source.modelos.Estudiante;
+import org.source.modelos.Profesor;
 import org.source.utils.QueryToMap;
 
 import java.io.IOException;
@@ -10,6 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServicioSalonEstudiante implements HttpHandler {
+
+    static public Estudiante[] estudiantes;
+    static public Profesor[] profesores;
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -43,7 +48,9 @@ public class ServicioSalonEstudiante implements HttpHandler {
     }
 
     private Map<String, Object> obtenerSalonEstudiante(String codigo){
+
         //Devuelve todos los valores null si es que hubo algún error
+
 
         //AQUI EMPIEZA TU MAGIA
         String profesor = "Pedro";

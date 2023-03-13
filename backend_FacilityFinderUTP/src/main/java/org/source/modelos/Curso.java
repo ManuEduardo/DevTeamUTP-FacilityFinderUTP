@@ -5,6 +5,12 @@ public class Curso {
     private Profesor profesor;
     private Clase[] clases;
 
+    public Curso(String nombre, Profesor profesor, Clase[] clases) {
+        this.nombre = nombre;
+        this.profesor = profesor;
+        this.clases = clases;
+    }
+
     public Curso(String nombre, Clase[] clases) {
         this.nombre = nombre;
         this.clases = clases;
@@ -12,6 +18,10 @@ public class Curso {
 
     public Curso(Clase[] clases) {
         this.clases = clases;
+    }
+
+    public Curso(String nombreCurso, String codigoAula, String diaSemana, String horaInicio, String horaFinal) {
+
     }
 
     public void setProfesor(Profesor profesor) {
