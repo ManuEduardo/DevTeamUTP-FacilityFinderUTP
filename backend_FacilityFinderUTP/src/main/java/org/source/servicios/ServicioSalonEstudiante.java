@@ -3,6 +3,7 @@ package org.source.servicios;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.source.utils.LecturaCsv;
 import org.source.utils.QueryToMap;
 
 import java.io.IOException;
@@ -43,6 +44,12 @@ public class ServicioSalonEstudiante implements HttpHandler {
         //Devuelve todos los valores null si es que hubo algún error
 
         //AQUI EMPIEZA TU MAGIA
+
+        String LinkDataDocentes = LecturaCsv.getRutaCsvDocentes();
+        String LinkDataAlumnos = LecturaCsv.getRutaCsvAlumnos();
+
+
+
         String profesor = "Pedro";
         String curso = "Programación Orientada a Objetos";
         String torre = "A";
