@@ -304,7 +304,6 @@ public class ProcesarCsv {
             resultado[0] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), profesor.getCursos()))[0];
             resultado[1] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), profesor.getCursos()))[1];
             resultado[2] = claseMasCercana.getAulaClase();
-            resultado[2] = claseMasCercana.getAulaClase();
             resultado[3] = claseMasCercana.getHoraInicio() + " - " + claseMasCercana.getHoraFinal();
             return resultado;
         }
@@ -313,7 +312,7 @@ public class ProcesarCsv {
         return null;
     }
 
-            public static String[] buscarCursoPorClase(String aulaClase, String diaSemana, String horaInicio, Curso[] cursos) {
+    public static String[] buscarCursoPorClase(String aulaClase, String diaSemana, String horaInicio, Curso[] cursos) {
         for (Curso curso : cursos) {
             for (Clase clase : curso.getClases()) {
                 if (clase.getAulaClase().equals(aulaClase) && clase.getDiaSemana().equals(diaSemana) &&
