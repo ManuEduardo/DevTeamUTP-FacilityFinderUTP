@@ -3,6 +3,8 @@ package org.source.modelos;
 public class Curso {
     private String NombreCurso;
     private String NombreProfesor;
+
+    // Clases a la semana.
     private Clase[] clases;
 
     public Curso(String nombreCurso, String nombreProfesor, Clase[] clases) {

@@ -59,7 +59,7 @@ public class ServicioSalonEstudiante implements HttpHandler {
         //Devuelve todos los valores null si es que hubo algún error
 
         //AQUI EMPIEZA TU MAGIA
-
+        // Se obtiene los datos del curso, el cual el profesor lo tiene más cercano.
         String[] cursoMasCercano = buscarClaseMasCercana(codigoEstudiante,  Constantes.dataEstudiante());
 
         String profesor = cursoMasCercano[0];
