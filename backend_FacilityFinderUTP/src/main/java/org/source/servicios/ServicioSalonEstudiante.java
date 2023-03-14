@@ -59,10 +59,8 @@ public class ServicioSalonEstudiante implements HttpHandler {
         //Devuelve todos los valores null si es que hubo algún error
 
         //AQUI EMPIEZA TU MAGIA
-        Constantes.dataEstudiante();
-        Estudiante[] estudiantes = Constantes.dataEstudiante();
 
-        String[] cursoMasCercano = buscarClaseMasCercana(codigoEstudiante, estudiantes);
+        String[] cursoMasCercano = buscarClaseMasCercana(codigoEstudiante,  Constantes.dataEstudiante());
 
         String profesor = cursoMasCercano[0];
         String curso = cursoMasCercano[1];

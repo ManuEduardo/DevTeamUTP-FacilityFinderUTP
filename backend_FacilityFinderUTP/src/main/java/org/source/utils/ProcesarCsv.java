@@ -35,12 +35,10 @@ public class ProcesarCsv {
 
     public static Profesor[] leerProfesoresDesdeCsv(String ruta) throws IOException, CsvException {
         List<String[]> filas = leerCsv(ruta);
-        Map<String, List<Curso>> cursosPorProfesor = new HashMap<>();
-
-        String nombreProfesor = "";
+        Map<Profesor, List<Curso>> cursosPorProfesor = new HashMap<>();
 
         for (String[] fila : filas) {
-            nombreProfesor = convertirCamelCaseATitulo(fila[0]);
+            String nombreProfesor = convertirCamelCaseATitulo(fila[0]);
             String codigoProfesor = fila[1];
             String nombreCurso = fila[2];
             String codigoAula = fila[3];
@@ -51,27 +49,29 @@ public class ProcesarCsv {
             Clase clase = new Clase(diaSemana, horaInicio, horaFinal, codigoAula);
             Curso curso = new Curso(nombreCurso, nombreProfesor, new Clase[]{clase});
 
-            if (!cursosPorProfesor.containsKey(codigoProfesor)) {
-                cursosPorProfesor.put(codigoProfesor, new ArrayList<>());
+            Profesor profesor = new Profesor(nombreProfesor, codigoProfesor, null);
+
+            if (!cursosPorProfesor.containsKey(profesor)) {
+                cursosPorProfesor.put(profesor, new ArrayList<>());
             }
 
-            cursosPorProfesor.get(codigoProfesor).add(curso);
+            cursosPorProfesor.get(profesor).add(curso);
         }
 
         Profesor[] profesores = new Profesor[cursosPorProfesor.size()];
         int i = 0;
 
-        for (Map.Entry<String, List<Curso>> entry : cursosPorProfesor.entrySet()) {
-            String codigoProfesor = entry.getKey();
+        for (Map.Entry<Profesor, List<Curso>> entry : cursosPorProfesor.entrySet()) {
+            Profesor profesor = entry.getKey();
             List<Curso> cursos = entry.getValue();
 
-            profesores[i] = new Profesor(nombreProfesor, codigoProfesor, cursos.toArray(new Curso[0]));
+            profesor.setCursos(cursos.toArray(new Curso[0]));
+            profesores[i] = profesor;
             i++;
         }
 
         return profesores;
     }
-
 
     public static Estudiante[] leerEstudiantesDesdeCsv(Profesor[] profesores, String ruta) throws IOException, CsvException {
         // Leer el archivo CSV.
@@ -231,7 +231,89 @@ public class ProcesarCsv {
         return null;
     }
 
-    public static String[] buscarCursoPorClase(String aulaClase, String diaSemana, String horaInicio, Curso[] cursos) {
+    public static String[] buscarProfesor(String codigoProfesor, Profesor[] profesores) {
+
+        Profesor profesor = null;
+        for (Profesor e : profesores) {
+            if (e.getCodigo().equals(codigoProfesor)) {
+                profesor = e;
+                break;
+            }
+        }
+        if (profesor == null) {
+            return null;
+        }
+
+        // Obtener la fecha y hora actual
+        LocalDate fechaActual = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+
+        // Obtener el día de la semana actual
+        DayOfWeek diaActual = fechaActual.getDayOfWeek();
+
+        // Obtener la lista de clases del profesor
+        List<Clase> clases = new ArrayList<>();
+        for (Curso curso : profesor.getCursos()) {
+            clases.addAll(List.of(curso.getClases()));
+        }
+
+        // Obtener la clase más cercana
+        Clase claseMasCercana = null;
+        long minutosMasCercanos = Long.MAX_VALUE;
+        for (Clase clase : clases) {
+            // Obtener el día de la semana de la clase
+            DayOfWeek diaClase = DayOfWeek.valueOf(convertirPalabra(clase.getDiaSemana()).toUpperCase());
+
+            // Si el día de la clase es anterior al día actual, considerar la próxima clase en la siguiente semana
+            if (diaClase.getValue() < diaActual.getValue()) {
+                diaClase = diaClase.plus(7);
+            }
+
+            // Si el día de la clase es el mismo que el día actual o en el futuro
+            if (diaClase.getValue() == diaActual.getValue()) {
+                // Obtener la hora de inicio de la clase
+                // Crear un objeto DateTimeFormatter para el formato de hora actualizado
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+
+                // Analizar la cadena utilizando el nuevo formato
+                LocalTime horaInicio = LocalTime.parse(clase.getHoraInicio(), formatter);
+
+                // Si la hora de inicio ya pasó hoy, considerar la próxima clase en la siguiente semana
+                if (horaInicio.isBefore(horaActual)) {
+                    diaClase = diaClase.plus(7);
+                    claseMasCercana = clase;
+                }
+
+                // Calcular los minutos entre la hora actual y la hora de inicio de la clase
+                long minutos = horaActual.until(horaInicio, java.time.temporal.ChronoUnit.MINUTES);
+
+                // Si es la clase más cercana hasta ahora, actualizar los valores
+                if (claseMasCercana == null || minutos < minutosMasCercanos) {
+                    claseMasCercana = clase;
+                    minutosMasCercanos = minutos;
+                }
+            }
+            if (claseMasCercana == null) {
+                claseMasCercana = clase;
+            }
+        }
+
+        // Si se encontró una clase cercana, devolver sus datos en un array de Strings
+        if (claseMasCercana != null) {
+            String[] resultado = new String[4];
+            resultado[0] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), profesor.getCursos()))[0];
+            resultado[1] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), profesor.getCursos()))[1];
+            resultado[2] = claseMasCercana.getAulaClase();
+            resultado[2] = claseMasCercana.getAulaClase();
+            resultado[3] = claseMasCercana.getHoraInicio() + " - " + claseMasCercana.getHoraFinal();
+            return resultado;
+        }
+
+        // Si no se encontró ninguna clase cercana, devolver null
+        return null;
+    }
+
+            public static String[] buscarCursoPorClase(String aulaClase, String diaSemana, String horaInicio, Curso[] cursos) {
         for (Curso curso : cursos) {
             for (Clase clase : curso.getClases()) {
                 if (clase.getAulaClase().equals(aulaClase) && clase.getDiaSemana().equals(diaSemana) &&
