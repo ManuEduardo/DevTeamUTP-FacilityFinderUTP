@@ -18,6 +18,25 @@ import java.util.*;
 
 public class ProcesarCsv {
 
+    public static void main(String[] args) throws IOException, CsvException {
+        String[] cursoMasCercano = buscarProfesor("C2701", Constantes.dataProfesor());
+
+        String curso = cursoMasCercano[1];
+        String pabellon = cursoMasCercano[2].substring(0,1);
+        String piso = cursoMasCercano[2].substring(1,3);;
+        String aula = cursoMasCercano[2].substring(3);;
+        String horario = cursoMasCercano[3];
+        String torre = pabellon;
+
+        System.out.println(curso);
+        System.out.println(pabellon);
+        System.out.println(piso);
+        System.out.println(aula);
+        System.out.println(horario);
+        System.out.println(torre);
+    }
+
+
     // Función que lee un archivo csv y devuelve un ArrayList<String[]>
     public static List<String[]> leerCsv(String ruta) throws IOException, CsvException {
         // Crear un lector de archivo csv con la ruta especificada.
