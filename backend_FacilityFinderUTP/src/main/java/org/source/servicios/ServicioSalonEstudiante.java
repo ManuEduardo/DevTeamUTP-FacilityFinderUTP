@@ -1,13 +1,20 @@
 package org.source.servicios;
 
 import com.google.gson.Gson;
+import com.opencsv.exceptions.CsvException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.source.modelos.Estudiante;
+import org.source.modelos.Profesor;
+import org.source.utils.Constantes;
+import org.source.utils.ProcesarCsv;
 import org.source.utils.QueryToMap;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.source.utils.ProcesarCsv.buscarClaseMasCercana;
 
 public class ServicioSalonEstudiante implements HttpHandler {
 
@@ -20,7 +27,12 @@ public class ServicioSalonEstudiante implements HttpHandler {
 
         // Crear un objeto Map para representar los datos que se enviarán como JSON
         // y llama a la función obtenerSalonEstudiante
-        Map<String, Object> data = obtenerSalonEstudiante(codigo_estudiante);
+        Map<String, Object> data = null;
+        try {
+            data = obtenerSalonEstudiante(codigo_estudiante);
+        } catch (CsvException e) {
+            throw new RuntimeException(e);
+        }
 
         // Convertir el objeto Map a una cadena JSON utilizando la biblioteca Gson
         Gson gson = new Gson();
@@ -28,6 +40,9 @@ public class ServicioSalonEstudiante implements HttpHandler {
 
         // Establecer el tipo de contenido de la respuesta a "application/json"
         exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
         // Enviar la respuesta al cliente (Falta los casos si es que no encuentra resultados)
         if(data.get("curso")==null){
@@ -39,28 +54,30 @@ public class ServicioSalonEstudiante implements HttpHandler {
         exchange.getResponseBody().close();
     }
 
-    private Map<String, Object> obtenerSalonEstudiante(String codigo){
+    private Map<String, Object> obtenerSalonEstudiante(String codigoEstudiante) throws IOException, CsvException {
+
         //Devuelve todos los valores null si es que hubo algún error
 
         //AQUI EMPIEZA TU MAGIA
-        String profesor = "Pedro";
-        String curso = "Programación Orientada a Objetos";
-        String torre = "A";
-        String pabellon = "A";
-        String piso = "06";
-        String aula = "04";
-        String horario = "10:30 - 13:30";
-        //AQUI TERMINA TU MAGIA
+        // Se obtiene los datos del curso, el cual el profesor lo tiene más cercano.
+        String[] cursoMasCercano = buscarClaseMasCercana(codigoEstudiante,  Constantes.dataEstudiante());
+
+        String profesor = cursoMasCercano[0];
+        String curso = cursoMasCercano[1];
+        String pabellon = cursoMasCercano[2].substring(0,1);
+        String piso = cursoMasCercano[2].substring(1,3);;
+        String aula = cursoMasCercano[2].substring(3);;
+        String horario = cursoMasCercano[3];
+        String torre = pabellon;
 
         Map<String, Object> informacionClase = new HashMap<>();
         informacionClase.put("profesor", profesor);
         informacionClase.put("curso", curso);
-        informacionClase.put("torre", torre);
         informacionClase.put("pabellon", pabellon);
         informacionClase.put("piso", piso);
         informacionClase.put("aula", aula);
         informacionClase.put("horario", horario);
-
+        informacionClase.put("torre", torre);
         return informacionClase;
     }
 }
