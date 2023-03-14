@@ -1,20 +1,22 @@
 package org.source.servicios;
 
 import com.google.gson.Gson;
+import com.opencsv.exceptions.CsvException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.source.modelos.Estudiante;
 import org.source.modelos.Profesor;
+import org.source.utils.Constantes;
+import org.source.utils.ProcesarCsv;
 import org.source.utils.QueryToMap;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServicioSalonEstudiante implements HttpHandler {
+import static org.source.utils.ProcesarCsv.buscarClaseMasCercana;
 
-    static public Estudiante[] estudiantes;
-    static public Profesor[] profesores;
+public class ServicioSalonEstudiante implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -25,7 +27,12 @@ public class ServicioSalonEstudiante implements HttpHandler {
 
         // Crear un objeto Map para representar los datos que se enviarán como JSON
         // y llama a la función obtenerSalonEstudiante
-        Map<String, Object> data = obtenerSalonEstudiante(codigo_estudiante);
+        Map<String, Object> data = null;
+        try {
+            data = obtenerSalonEstudiante(codigo_estudiante);
+        } catch (CsvException e) {
+            throw new RuntimeException(e);
+        }
 
         // Convertir el objeto Map a una cadena JSON utilizando la biblioteca Gson
         Gson gson = new Gson();
@@ -47,20 +54,23 @@ public class ServicioSalonEstudiante implements HttpHandler {
         exchange.getResponseBody().close();
     }
 
-    private Map<String, Object> obtenerSalonEstudiante(String codigo){
+    private Map<String, Object> obtenerSalonEstudiante(String codigoEstudiante) throws IOException, CsvException {
 
         //Devuelve todos los valores null si es que hubo algún error
 
-
         //AQUI EMPIEZA TU MAGIA
-        String profesor = "Pedro";
-        String curso = "Programación Orientada a Objetos";
-        String pabellon = "A";
-        String piso = "06";
-        String aula = "04";
-        String horario = "10:30 - 13:30";
-        String torre = "A";
-        //AQUI TERMINA TU MAGIA
+        Constantes.dataEstudiante();
+        Estudiante[] estudiantes = Constantes.dataEstudiante();
+
+        String[] cursoMasCercano = buscarClaseMasCercana(codigoEstudiante, estudiantes);
+
+        String profesor = cursoMasCercano[0];
+        String curso = cursoMasCercano[1];
+        String pabellon = cursoMasCercano[2].substring(0,1);
+        String piso = cursoMasCercano[2].substring(1,3);;
+        String aula = cursoMasCercano[2].substring(3);;
+        String horario = cursoMasCercano[3];
+        String torre = pabellon;
 
         Map<String, Object> informacionClase = new HashMap<>();
         informacionClase.put("profesor", profesor);

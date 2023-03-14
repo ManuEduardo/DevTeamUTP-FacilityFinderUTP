@@ -9,62 +9,14 @@ import org.source.modelos.Profesor;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class ProcesarCsv {
-
-    public static void main(String[] args) throws IOException, CsvException {
-        String rutaCsv = Constantes.RutaCsvDocente();
-
-        try {
-            List<Profesor> profesores = List.of(leerProfesoresDesdeCsv(rutaCsv));
-
-            // Mostrar el contenido de cada profesor y sus cursos
-            for (Profesor profesor : profesores) {
-                System.out.println("Profesor: " + profesor.getNombre() + " (" + profesor.getCodigo() + ")");
-                for (Curso curso : profesor.getCursos()) {
-                    System.out.println("\tCurso: " + curso.getNombreCurso() + " (" + curso.getNombreCurso() + ")");
-                    for (Clase clase : curso.getClases()) {
-                        System.out.println("\t\tDía: " + clase.getDiaSemana() + " / Hora: " + clase.getHoraInicio() + " - " + clase.getHoraFinal() + " / Aula: " + clase.getAulaClase());
-                    }
-                }
-                System.out.println();
-            }
-        } catch (IOException e) {
-            System.out.println("Error al leer el archivo: " + e.getMessage());
-        } catch (CsvException e) {
-            System.out.println("Error al procesar el archivo CSV: " + e.getMessage());
-        }
-
-        // Leer los datos de los estudiantes desde un archivo CSV.
-        Estudiante[] estudiantes = leerEstudiantesDesdeCsv(leerProfesoresDesdeCsv(rutaCsv), Constantes.RutaCsvEstudiante());
-
-        // Mostrar los datos de los estudiantes.
-        for (Estudiante estudiante : estudiantes) {
-            System.out.println("Nombre del estudiante: " + estudiante.getNombre());
-            System.out.println("Código del estudiante: " + estudiante.getCodigo());
-
-            Curso[] cursos = estudiante.getCursos();
-            for (Curso curso : cursos) {
-                System.out.println("Nombre del curso: " + curso.getNombreCurso());
-                System.out.println("Nombre del profesor: " + curso.getNombreProfesor());
-
-                Clase[] clases = curso.getClases();
-                for (Clase clase : clases) {
-                    System.out.println("Día de la semana: " + clase.getDiaSemana());
-                    System.out.println("Hora de inicio: " + clase.getHoraInicio());
-                    System.out.println("Hora de finalización: " + clase.getHoraFinal());
-                    System.out.println("Código del aula: " + clase.getAulaClase());
-                }
-            }
-
-            System.out.println("------------------------");
-        }
-    }
-
 
     // Función que lee un archivo csv y devuelve un ArrayList<String[]>
     public static List<String[]> leerCsv(String ruta) throws IOException, CsvException {
@@ -97,7 +49,7 @@ public class ProcesarCsv {
             String horaFinal = fila[6];
 
             Clase clase = new Clase(diaSemana, horaInicio, horaFinal, codigoAula);
-            Curso curso = new Curso(nombreCurso, nombreProfesor, new Clase[] { clase });
+            Curso curso = new Curso(nombreCurso, nombreProfesor, new Clase[]{clase});
 
             if (!cursosPorProfesor.containsKey(codigoProfesor)) {
                 cursosPorProfesor.put(codigoProfesor, new ArrayList<>());
@@ -148,7 +100,7 @@ public class ProcesarCsv {
             }
 
             // Crear el objeto Estudiante y añadirlo al array.
-            Curso[] cursos = new Curso[] { new Curso(obtenerNombreCurso(diaSemana, horaInicio, horaFinal, codigoAula,profesores), obtenerNombreProfesor(diaSemana, horaInicio, horaFinal, codigoAula,profesores), new Clase[] { new Clase(diaSemana, horaInicio, horaFinal, codigoAula) }) };
+            Curso[] cursos = new Curso[]{new Curso(obtenerNombreCurso(diaSemana, horaInicio, horaFinal, codigoAula, profesores), obtenerNombreProfesor(diaSemana, horaInicio, horaFinal, codigoAula, profesores), new Clase[]{new Clase(diaSemana, horaInicio, horaFinal, codigoAula)})};
             Estudiante estudiante = new Estudiante(nombreEstudiante, codigoEstudiante, cursos);
             estudiantes[i] = estudiante;
         }
@@ -203,7 +155,139 @@ public class ProcesarCsv {
         }
 
         String titulo = resultado.toString();
-        return titulo.toUpperCase().charAt(0) + titulo.substring(1)+".";
+        return titulo.toUpperCase().charAt(0) + titulo.substring(1) + ".";
+    }
+
+    public static String[] buscarClaseMasCercana(String codigoEstudiante, Estudiante[] estudiantes) {
+        // Buscar al estudiante en el array
+        Estudiante estudiante = null;
+        for (Estudiante e : estudiantes) {
+            if (e.getCodigo().equals(codigoEstudiante)) {
+                estudiante = e;
+                break;
+            }
+        }
+        if (estudiante == null) {
+            return null;
+        }
+
+        // Obtener la fecha y hora actual
+        LocalDate fechaActual = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+
+        // Obtener el día de la semana actual
+        DayOfWeek diaActual = fechaActual.getDayOfWeek();
+
+        // Obtener la lista de clases del estudiante
+        List<Clase> clases = new ArrayList<>();
+        for (Curso curso : estudiante.getCursos()) {
+            clases.addAll(List.of(curso.getClases()));
+        }
+
+        // Obtener la clase más cercana
+        Clase claseMasCercana = null;
+        long minutosMasCercanos = Long.MAX_VALUE;
+        for (Clase clase : clases) {
+            // Obtener el día de la semana de la clase
+            DayOfWeek diaClase = DayOfWeek.valueOf(convertirPalabra(clase.getDiaSemana()).toUpperCase());
+
+            // Si el día de la clase es anterior al día actual, considerar la próxima clase en la siguiente semana
+            if (diaClase.getValue() < diaActual.getValue()) {
+                diaClase = diaClase.plus(7);
+            }
+
+            // Si el día de la clase es el mismo que el día actual o en el futuro
+            if (diaClase.getValue() == diaActual.getValue()) {
+                // Obtener la hora de inicio de la clase
+                LocalTime horaInicio = LocalTime.parse(clase.getHoraInicio(), DateTimeFormatter.ISO_LOCAL_TIME);
+
+                // Si la hora de inicio ya pasó hoy, considerar la próxima clase en la siguiente semana
+                if (horaInicio.isBefore(horaActual)) {
+                    diaClase = diaClase.plus(7);
+                }
+
+                // Calcular los minutos entre la hora actual y la hora de inicio de la clase
+                long minutos = horaActual.until(horaInicio, java.time.temporal.ChronoUnit.MINUTES);
+
+                // Si es la clase más cercana hasta ahora, actualizar los valores
+                if (claseMasCercana == null || minutos < minutosMasCercanos) {
+                    claseMasCercana = clase;
+                    minutosMasCercanos = minutos;
+                }
+            }
+        }
+
+        // Si se encontró una clase cercana, devolver sus datos en un array de Strings
+        if (claseMasCercana != null) {
+            String[] resultado = new String[4];
+            resultado[0] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), estudiante.getCursos()))[0];
+            resultado[1] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), estudiante.getCursos()))[1];
+            resultado[2] = claseMasCercana.getAulaClase();
+            resultado[3] = claseMasCercana.getHoraInicio() + " - " + claseMasCercana.getHoraFinal();
+            return resultado;
+        }
+
+        // Si no se encontró ninguna clase cercana, devolver null
+        return null;
+    }
+
+    public static String[] buscarCursoPorClase(String aulaClase, String diaSemana, String horaInicio, Curso[] cursos) {
+        for (Curso curso : cursos) {
+            for (Clase clase : curso.getClases()) {
+                if (clase.getAulaClase().equals(aulaClase) && clase.getDiaSemana().equals(diaSemana) &&
+                        clase.getHoraInicio().equals(horaInicio)) {
+                    String[] datosCurso = new String[4];
+                    datosCurso[0] = curso.getNombreProfesor();
+                    datosCurso[1] = convertirCamelCaseATitulo(curso.getNombreCurso());
+                    datosCurso[2] = clase.getAulaClase();
+                    datosCurso[3] = clase.getHoraInicio() + " - " + clase.getHoraFinal();
+                    return datosCurso;
+                }
+            }
+        }
+        return null;
+    }
+    public static String convertirPalabra(String palabra) {
+        String resultado = "";
+        switch(palabra.toLowerCase()) {
+            case "lunes":
+                resultado = "Monday";
+                break;
+            case "martes":
+                resultado = "Tuesday";
+                break;
+            case "miércoles":
+                resultado = "Wednesday";
+                break;
+            case "jueves":
+                resultado = "Thursday";
+                break;
+            case "viernes":
+                resultado = "Friday";
+                break;
+            case "sábado":
+                resultado = "Saturday";
+                break;
+            case "domingo":
+                resultado = "Sunday";
+                break;
+            case "profesor":
+                resultado = "professor";
+                break;
+            case "curso":
+                resultado = "course";
+                break;
+            case "aula de clase":
+                resultado = "classroom";
+                break;
+            case "hora":
+                resultado = "hour";
+                break;
+            default:
+                resultado = palabra;
+                break;
+        }
+        return resultado;
     }
 
 }
