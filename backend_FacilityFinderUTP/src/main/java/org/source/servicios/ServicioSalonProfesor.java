@@ -48,7 +48,7 @@ public class ServicioSalonProfesor implements HttpHandler {
 
         Map<String, Object> informacionClase = new HashMap<>();
 
-
+        // Se obtiene los datos del curso, el cual el profesor lo tiene más cercano.
         String[] cursoMasCercano = buscarProfesor(codigoProfesor, Constantes.dataProfesor());
 
         String curso = cursoMasCercano[1];
@@ -67,32 +67,4 @@ public class ServicioSalonProfesor implements HttpHandler {
         return informacionClase;
     }
 
-    private Map<String, Object> obtenerSalonEstudiante(String codigoEstudiante) throws IOException, CsvException {
-
-        //Devuelve todos los valores null si es que hubo algún error
-
-        //AQUI EMPIEZA TU MAGIA
-
-        Estudiante[] estudiantes = Constantes.dataEstudiante();
-
-        String[] cursoMasCercano = buscarClaseMasCercana(codigoEstudiante, estudiantes);
-
-        String profesor = cursoMasCercano[0];
-        String curso = cursoMasCercano[1];
-        String pabellon = cursoMasCercano[2].substring(0,1);
-        String piso = cursoMasCercano[2].substring(1,3);;
-        String aula = cursoMasCercano[2].substring(3);;
-        String horario = cursoMasCercano[3];
-        String torre = pabellon;
-
-        Map<String, Object> informacionClase = new HashMap<>();
-        informacionClase.put("profesor", profesor);
-        informacionClase.put("curso", curso);
-        informacionClase.put("pabellon", pabellon);
-        informacionClase.put("piso", piso);
-        informacionClase.put("aula", aula);
-        informacionClase.put("horario", horario);
-        informacionClase.put("torre", torre);
-        return informacionClase;
-    }
 }

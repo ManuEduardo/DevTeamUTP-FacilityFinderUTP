@@ -1,6 +1,8 @@
 package org.source.modelos;
 
 public class Estudiante extends PersonaUniversitaria{
+
+    //Cursos que lleva el alumno.
     private Curso[] cursos;
     public Estudiante(String nombre, String codigo) {
         super(nombre, codigo);

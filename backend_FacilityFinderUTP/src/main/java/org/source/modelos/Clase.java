@@ -1,10 +1,14 @@
 package org.source.modelos;
 
 public class Clase {
+
+    // Dia de la semana en el cual se imparte la clase.
     private String DiaSemana;
+
     private String HoraInicio;
     private String HoraFinal;
 
+    //Codigo del aula de clase donde se impartirá la clase.
     private String AulaClase;
 
     public Clase(String diaSemana, String horaInicio, String horaFinal, String aulaClase) {
