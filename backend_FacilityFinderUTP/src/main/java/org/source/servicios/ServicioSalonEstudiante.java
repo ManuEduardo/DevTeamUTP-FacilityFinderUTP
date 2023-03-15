@@ -70,6 +70,10 @@ public class ServicioSalonEstudiante implements HttpHandler {
         String horario = cursoMasCercano[3];
         String torre = pabellon;
 
+        for(int i = 0; i< cursoMasCercano.length; i++){
+            System.out.println(cursoMasCercano[i]);
+        }
+
         Map<String, Object> informacionClase = new HashMap<>();
         informacionClase.put("profesor", profesor);
         informacionClase.put("curso", curso);

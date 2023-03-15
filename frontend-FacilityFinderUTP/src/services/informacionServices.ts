@@ -7,6 +7,7 @@ export const getInformacionClaseFetch = async (
     const clase = await fetch(
       `http://localhost:8000/estudiante?codigo=${codigoCompleto}`
     ).then((response) => response.json());
+    console.log(clase)
     const infoClase = {
       horario: clase.horario,
       aula: `${clase.pabellon} ${clase.piso} ${clase.aula}`,
