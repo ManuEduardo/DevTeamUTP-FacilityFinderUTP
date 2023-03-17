@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class LecturaCsv {
     private final String UrlScv;
-    final String SEPARADOR = ",";
+    final String SEPARADOR = ";";
     BufferedReader bufferLectura = null;
 
     public LecturaCsv(String urlScv) {
