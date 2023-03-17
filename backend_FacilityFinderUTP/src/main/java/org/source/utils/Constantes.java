@@ -19,6 +19,7 @@ public class Constantes {
     }
 
     // Obtenermos la data, como es algo que está en una "base de datos" csv, entonces será estatica.
+    // EL plan es comvertir estos array en HashMap
     public static Profesor[] dataProfesor() throws IOException, CsvException {return ProcesarCsv.leerProfesoresDesdeCsv("a");}
     public static Estudiante[] dataEstudiante() throws IOException, CsvException {return ProcesarCsv.leerEstudiantesDesdeCsv(dataProfesor(),"");}
 
