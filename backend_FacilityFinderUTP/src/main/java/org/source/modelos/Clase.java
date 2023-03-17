@@ -49,4 +49,8 @@ public class Clase {
     public void setAulaClase(String aulaClase) {
         AulaClase = aulaClase;
     }
+
+    public String HorarioClase() {
+        return HoraInicio + " - " + HoraFinal;
+    }
 }

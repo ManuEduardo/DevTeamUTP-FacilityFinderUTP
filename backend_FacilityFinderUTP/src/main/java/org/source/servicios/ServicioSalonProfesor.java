@@ -12,9 +12,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.source.utils.ProcesarCsv.buscarClaseMasCercana;
-import static org.source.utils.ProcesarCsv.buscarProfesor;
-
 public class ServicioSalonProfesor implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -49,7 +46,7 @@ public class ServicioSalonProfesor implements HttpHandler {
         Map<String, Object> informacionClase = new HashMap<>();
 
         // Se obtiene los datos del curso, el cual el profesor lo tiene más cercano.
-        String[] cursoMasCercano = buscarProfesor(codigoProfesor, Constantes.dataProfesor());
+        String[] cursoMasCercano = null;
 
         String curso = cursoMasCercano[1];
         String pabellon = cursoMasCercano[2].substring(0,1);

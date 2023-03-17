@@ -2,36 +2,34 @@ package org.source.modelos;
 
 public class Curso {
     private String NombreCurso;
-    private String NombreProfesor;
+    private Profesor profesor;
 
     // Clases a la semana.
     private Clase[] clases;
 
-    public Curso(String nombreCurso, String nombreProfesor, Clase[] clases) {
+    public Curso(String nombreCurso, Clase[] clases) {
         NombreCurso = nombreCurso;
-        NombreProfesor = nombreProfesor;
         this.clases = clases;
-    }
-
-
-    public void setNombreCurso(String nombreCurso) {
-        this.NombreCurso = nombreCurso;
     }
 
     public String getNombreCurso() {
         return NombreCurso;
     }
 
+    public void setNombreCurso(String nombreCurso) {
+        NombreCurso = nombreCurso;
+    }
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
     public Clase[] getClases() {
         return clases;
-    }
-
-    public String getNombreProfesor() {
-        return NombreProfesor;
-    }
-
-    public void setNombreProfesor(String nombreProfesor) {
-        NombreProfesor = nombreProfesor;
     }
 
     public void setClases(Clase[] clases) {

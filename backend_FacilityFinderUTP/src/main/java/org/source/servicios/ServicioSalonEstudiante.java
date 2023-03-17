@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.source.utils.ProcesarCsv.buscarClaseMasCercana;
-
 public class ServicioSalonEstudiante implements HttpHandler {
 
     @Override
@@ -60,7 +58,7 @@ public class ServicioSalonEstudiante implements HttpHandler {
 
         //AQUI EMPIEZA TU MAGIA
         // Se obtiene los datos del curso, el cual el profesor lo tiene más cercano.
-        String[] cursoMasCercano = buscarClaseMasCercana(codigoEstudiante,  Constantes.dataEstudiante());
+        String[] cursoMasCercano = null;
 
         String profesor = cursoMasCercano[0];
         String curso = cursoMasCercano[1];

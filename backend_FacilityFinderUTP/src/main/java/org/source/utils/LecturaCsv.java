@@ -25,9 +25,10 @@ public class LecturaCsv {
             String linea = bufferLectura.readLine();
 
             while (linea != null) {
-                // Sepapar la linea leída con el separador definido previamente
                 String[] campos = linea.split(SEPARADOR);
-                arrayCsv.add(campos);
+                // En este caso Solo almacenar las variables que usaremos.
+                String[] FiltroCampos = new String[]{campos[4], campos[6], campos[28], campos[33], campos[41], campos[42], campos[43], campos[44], campos[45]};
+                arrayCsv.add(FiltroCampos);
                 // Volver a leer otra línea del fichero
                 linea = bufferLectura.readLine();
             }
