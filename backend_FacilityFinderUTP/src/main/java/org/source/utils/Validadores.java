@@ -1,42 +1,51 @@
 package org.source.utils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Validadores {
-    public static boolean ValidarCodigoProfesor(String cadena) {
-        Pattern patron = Pattern.compile("^C\\d{4}$");
-        // ^ indica que la cadena debe empezar con C
-        // \\d{4} indica que deben ir 4 números después del C
-        Matcher matcher = patron.matcher(cadena);
-        return matcher.matches();
+
+    private static final int LONGITUD_CODIGO_PROFESOR = 9;
+    private static final int LONGITUD_CODIGO_ALUMNO = 6;
+
+    public static ResultadoValidacion validarCodigo(String codigo, Clave clave) {
+
+        if (clave == null) {
+            return new ResultadoValidacion(false, "Clave no puede ser nula");
+        }
+
+        int longitudRequerida = (clave == Clave.PROFESOR) ? LONGITUD_CODIGO_PROFESOR : LONGITUD_CODIGO_ALUMNO;
+
+        if (codigo == null || codigo.strip().length() != longitudRequerida) {
+            return new ResultadoValidacion(false, String.format("El código '%s' es inválido (debe tener %d dígitos)", codigo, longitudRequerida));
+        }
+
+        char primerCaracterEsperado = (clave == Clave.PROFESOR) ? 'A' : 'C';
+
+        if (codigo.strip().charAt(0) != primerCaracterEsperado) {
+            return new ResultadoValidacion(false, String.format("El código '%s' debe empezar con la letra '%c' en mayúscula.", codigo, primerCaracterEsperado));
+        }
+
+        if (!codigo.strip().substring(1).matches("\\d+")) {
+            return new ResultadoValidacion(false, String.format("El código '%s' debe contener solo dígitos numéricos después del primer carácter.", codigo));
+        }
+
+        return new ResultadoValidacion(true, "Código válido");
     }
 
-    public static boolean ValidarCodigoAula (String cadena) {
-        if (cadena.length() != 5) {
-            return false; // la cadena debe tener longitud 5
-        }
-        char primerCaracter = cadena.charAt(0);
-        if (primerCaracter != 'A' && primerCaracter != 'B' && primerCaracter != 'C') {
-            return false; // el primer caracter debe ser A, B o C
-        }
-        for (int i = 1; i < 5; i++) {
-            char caracter = cadena.charAt(i);
-            if (caracter < '0' || caracter > '9') {
-                return false; // los siguientes 4 caracteres deben ser números
-            }
-        }
-        return true; // la cadena es válida
-    }
+    public static class ResultadoValidacion {
+        private final boolean codigoValido;
+        private final String mensaje;
 
-    public static boolean validarDiaSemana(String dia) {
-        String[] diasSemana = {"lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"};
-        String diaMinusculas = dia.toLowerCase();
-        for (String d : diasSemana) {
-            if (d.equalsIgnoreCase(diaMinusculas)) {
-                return true; // la cadena es un día de la semana válido
-            }
+        public ResultadoValidacion(boolean codigoValido, String mensaje) {
+            this.codigoValido = codigoValido;
+            this.mensaje = mensaje;
         }
-        return false; // la cadena no es un día de la semana válido
+
+        public boolean isCodigoValido() {
+            return codigoValido;
+        }
+
+        public String getMensaje() {
+            return mensaje;
+        }
     }
 }
+

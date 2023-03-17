@@ -24,6 +24,9 @@ public class LecturaCsv {
             // Leer una linea del archivo
             String linea = bufferLectura.readLine();
 
+            // La primera linea del csv no es data, son los nombres de las filas del csv. Por ello la pasamos.
+            linea = bufferLectura.readLine();
+
             while (linea != null) {
                 String[] campos = linea.split(SEPARADOR);
                 // En este caso Solo almacenar las variables que usaremos.
