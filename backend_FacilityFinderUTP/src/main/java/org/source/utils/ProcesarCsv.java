@@ -28,6 +28,15 @@ public class ProcesarCsv {
 
         HashMap <String,LinkedList <Profesor[]>>[] globalData = new HashMap[4];
 
+        for (String[] array : filasCsv) {
+
+            String nombreAlumno = array[0];
+            String codigoAlumno = array[1];
+            String NombreCurso = array[2];
+            String dataAula = array[2];
+
+        }
+
         return globalData;
     }
 

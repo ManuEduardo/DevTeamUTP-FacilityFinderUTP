@@ -9,13 +9,17 @@ public class Clase {
     private String HoraFinal;
 
     //Codigo del aula de clase donde se impartirá la clase.
-    private String AulaClase;
+    private Ambiente ambiente;
 
-    public Clase(String diaSemana, String horaInicio, String horaFinal, String aulaClase) {
+    public Clase(String diaSemana, String horaInicio, String horaFinal, Ambiente ambiente) {
         DiaSemana = diaSemana;
         HoraInicio = horaInicio;
         HoraFinal = horaFinal;
-        AulaClase = aulaClase;
+        this.ambiente = ambiente;
+    }
+
+    public void setAmbiente(Ambiente ambiente) {
+        this.ambiente = ambiente;
     }
 
     public String getDiaSemana() {
@@ -42,12 +46,8 @@ public class Clase {
         HoraFinal = horaFinal;
     }
 
-    public String getAulaClase() {
-        return AulaClase;
-    }
-
-    public void setAulaClase(String aulaClase) {
-        AulaClase = aulaClase;
+    public Ambiente getAmbiente() {
+        return ambiente;
     }
 
     public String HorarioClase() {
