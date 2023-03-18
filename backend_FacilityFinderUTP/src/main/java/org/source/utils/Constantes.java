@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import static org.source.utils.ProcesarCsv.separarDataAula;
 
@@ -35,11 +36,40 @@ public class Constantes {
     // En el tercero la data de los cursos, la cuarta de las clases que habrán.
     private static ProcesarCsv totalData = new ProcesarCsv(lecturaCsv.leer());
 
-    public static void main(String[] args) throws IOException, CsvException {
-        Estudiante Juan = (Estudiante) totalData()[0].get("U19200293");
+    public static HashMap <String,Object>[] dataProcesada() throws IOException {
+        return totalData.createData();
     }
 
-    public static HashMap <String,Object>[] totalData() throws IOException, CsvException {return totalData.createData();}
+    public static HashMap <String,Profesor> dataProfesor() throws IOException {
 
+        return convertirHashMapProfesor(dataProcesada()[1]);
+    }
 
+    public static HashMap <String,Estudiante> dataEstudiante() throws IOException {
+        return convertirHashMapEstudiante(dataProcesada()[0]);
+    }
+
+    public static HashMap<String, Estudiante> convertirHashMapEstudiante(HashMap<String, Object> mapa) {
+        HashMap<String, Estudiante> nuevoMapa = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : mapa.entrySet()) {
+            String clave = entry.getKey();
+            Estudiante estudiante = (Estudiante) entry.getValue(); // casting explícito a la clase Estudiante
+            nuevoMapa.put(clave, estudiante);
+        }
+
+        return nuevoMapa;
+    }
+
+    public static HashMap<String, Profesor> convertirHashMapProfesor(HashMap<String, Object> mapa) {
+        HashMap<String, Profesor> nuevoMapa = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : mapa.entrySet()) {
+            String clave = entry.getKey();
+            Profesor profesor= (Profesor) entry.getValue(); // casting explícito a la clase Estudiante
+            nuevoMapa.put(clave, profesor);
+        }
+
+        return nuevoMapa;
+    }
 }
