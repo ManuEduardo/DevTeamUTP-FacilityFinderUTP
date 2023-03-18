@@ -128,7 +128,9 @@ public class ProcesarCsv {
                 profesor.agregarCurso(curso);
 
             } catch (Exception ex) {
-                errorLog.log(ex.getMessage(), ErrorLog.Level.ERROR, nombreLugar);
+                if (valorAnterior != null){
+                    errorLog.log(ex.getMessage(), ErrorLog.Level.ERROR, nombreLugar);
+                }
             }
 
             // guardar el valor actual como valor anterior para la siguiente iteración

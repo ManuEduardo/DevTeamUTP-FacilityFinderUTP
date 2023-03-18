@@ -18,7 +18,6 @@ public class ErrorLog {
     // log es una clase public que recibirá un mensaje, el nivel del error y su lugar
     // devolviendonos un string evento que a su vez se guardará en el error.log.
 
-
     public ErrorLog() {
     }
 
