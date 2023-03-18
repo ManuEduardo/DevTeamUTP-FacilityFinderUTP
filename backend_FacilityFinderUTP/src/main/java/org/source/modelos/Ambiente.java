@@ -4,13 +4,13 @@ public class Ambiente {
     private String Sede;
     private String nombreSede;
     private String Ambiente;
-    private String Torre;
+    private String TorreOrNumeroAV;
 
     public Ambiente(String sede, String nombreSede, String ambiente, String torre) {
         Sede = sede;
         this.nombreSede = nombreSede;
         Ambiente = ambiente;
-        Torre = torre;
+        TorreOrNumeroAV = torre;
     }
 
     public String getSede() {
@@ -37,16 +37,16 @@ public class Ambiente {
         Ambiente = ambiente;
     }
 
-    public String getTorre() {
-        return Torre;
+    public String getTorreOrNumeroAV() {
+        return TorreOrNumeroAV;
     }
 
-    public void setTorre(String torre) {
-        Torre = torre;
+    public void setTorreOrNumeroAV(String torreOrNumeroAV) {
+        TorreOrNumeroAV = torreOrNumeroAV;
     }
 
     @Override
     public String toString() {
-        return Sede + Ambiente + Torre;
+        return Sede  + TorreOrNumeroAV + Ambiente;
     }
 }

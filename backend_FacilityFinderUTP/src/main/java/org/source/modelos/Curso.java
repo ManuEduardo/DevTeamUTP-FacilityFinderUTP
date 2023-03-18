@@ -2,13 +2,14 @@ package org.source.modelos;
 
 public class Curso {
     private String NombreCurso;
-    private Profesor profesor;
+    private String profesor;
 
     // Clases a la semana.
     private Clase[] clases;
 
-    public Curso(String nombreCurso, Clase[] clases) {
+    public Curso(String nombreCurso, String profesor, Clase[] clases) {
         NombreCurso = nombreCurso;
+        this.profesor = profesor;
         this.clases = clases;
     }
 
@@ -20,11 +21,11 @@ public class Curso {
         NombreCurso = nombreCurso;
     }
 
-    public Profesor getProfesor() {
+    public String getProfesor() {
         return profesor;
     }
 
-    public void setProfesor(Profesor profesor) {
+    public void setProfesor(String profesor) {
         this.profesor = profesor;
     }
 

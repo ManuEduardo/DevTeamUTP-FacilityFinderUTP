@@ -1,6 +1,8 @@
 package org.source.utils;
 
 import com.opencsv.exceptions.CsvException;
+import org.source.Validaciones.ErrorLog;
+import org.source.Validaciones.Validadores;
 import org.source.modelos.Estudiante;
 import org.source.modelos.Profesor;
 
@@ -11,14 +13,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import static org.source.utils.ProcesarCsv.separarDataAula;
+
 public class Constantes {
 
     // Forma para que no importa donde sea la computadora, no se cambiará la ruta.
     private static final Path CsvDataHorarios = Paths.get("backend_FacilityFinderUTP","src", "main", "java", "org", "source", "csvs", "DataHorarios.csv");
-
+    private static final Path ErrorLog = Paths.get("backend_FacilityFinderUTP","src", "main", "resources", "error.log");
     // Obtenemos las ruta
     public static String RutaCsvDataHorarios() {
         return CsvDataHorarios.toAbsolutePath().toString();
+    }
+    public static String RutaErrorLog() {
+        return ErrorLog.toAbsolutePath().toString();
     }
 
     private static LecturaCsv lecturaCsv = new LecturaCsv(RutaCsvDataHorarios());
@@ -28,15 +35,11 @@ public class Constantes {
     // En el tercero la data de los cursos, la cuarta de las clases que habrán.
     private static ProcesarCsv totalData = new ProcesarCsv(lecturaCsv.leer());
 
-    public static void main(String[] args) {
-        for (String[] array : lecturaCsv.leer()) {
-            // Imprimir los elementos del array en la consola
-            for (String elemento : array) {
-                System.out.print(elemento + " ");
-            }
-            System.out.println(); // Agregar un salto de línea después de cada array
-        }
+    public static void main(String[] args) throws IOException, CsvException {
+        Estudiante Juan = (Estudiante) totalData()[0].get("U22207603");
     }
 
-    public static HashMap <String,LinkedList <Profesor[]>>[] totalData() throws IOException, CsvException {return totalData.createData();}
+    public static HashMap <String,Object>[] totalData() throws IOException, CsvException {return totalData.createData();}
+
+
 }
