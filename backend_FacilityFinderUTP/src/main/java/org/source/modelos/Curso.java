@@ -13,6 +13,21 @@ public class Curso {
         this.clases = clases;
     }
 
+    public Curso(String nombreCurso, String profesor) {
+        NombreCurso = nombreCurso;
+        this.profesor = profesor;
+        this.clases = new Clase[0];
+    }
+
+    public void agregarClase(Clase clase) {
+        Clase[] nuevasClases = new Clase[clases.length + 1]; // Crear un nuevo array con espacio para un curso más.
+        for (int i = 0; i < clases.length; i++) {
+            nuevasClases[i] = clases[i]; // Copiar los cursos existentes al nuevo array.
+        }
+        nuevasClases[clases.length] = clase; // Añadir el nuevo curso al final del nuevo array.
+        clases = nuevasClases; // Reemplazar el array antiguo por el nuevo array.
+    }
+
     public String getNombreCurso() {
         return NombreCurso;
     }
@@ -36,4 +51,6 @@ public class Curso {
     public void setClases(Clase[] clases) {
         this.clases = clases;
     }
+
+
 }

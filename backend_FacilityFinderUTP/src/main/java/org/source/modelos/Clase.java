@@ -18,6 +18,12 @@ public class Clase {
         this.ambiente = ambiente;
     }
 
+    public Clase(String diaSemana, String horaInicio, String horaFinal) {
+        DiaSemana = diaSemana;
+        HoraInicio = horaInicio;
+        HoraFinal = horaFinal;
+    }
+
     public void setAmbiente(Ambiente ambiente) {
         this.ambiente = ambiente;
     }

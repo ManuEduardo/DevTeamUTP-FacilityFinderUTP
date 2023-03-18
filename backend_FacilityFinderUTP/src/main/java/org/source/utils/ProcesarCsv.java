@@ -20,69 +20,139 @@ public class ProcesarCsv {
 
     // Constructor
     public ProcesarCsv(LinkedList<String[]> filasCsv) {
-        this.filasCsv = filasCsv;
+        this.filasCsv = ordenamientoAlfabetico(filasCsv);
     }
 
     // Método que crea y devuelve un arreglo de mapas
-    public HashMap <String,Object>[] createData() throws IOException {
+    public HashMap<String, Object>[] createData() throws IOException {
 
-        HashMap<String, Object>[] globalData = new HashMap[4];
+        HashMap<String, Object>[] globalData = new HashMap[2];
 
-        globalData[0] =  new HashMap<String, Object>();
-        globalData[1] =  new HashMap<String, Object>();
-        globalData[2] =  new HashMap<String, Object>();
-        globalData[3] =  new HashMap<String, Object>();
+        globalData[0] = new HashMap<String, Object>();
+        globalData[1] = new HashMap<String, Object>();
 
         int contador = 0;
+        String[] valorAnterior = null;
 
-        for (String[] array : filasCsv) {
+        Estudiante estudiante = new Estudiante(null,null);
+        Profesor profesor = new Profesor(null, null);
 
-            String nombreAlumno = array[0];
-            String codigoAlumno = array[1];
-            String nombreCurso = array[2];
-            String dataAula = array[3];
-            String codigoProfesor = array[4];
-            String nombreProfesor = array[5];
-            String diaClase = array[6];
-            String horarioInicio = array[7];
-            String horarioFinal = array[8];
+        String nombreAlumno = null;
+        String codigoAlumno = null;
+        String nombreCurso = null;
+        String dataAula = null;
+        String codigoProfesor = null;
+        String nombreProfesor = null;
+        String diaClase = null;
+        String horarioInicio = null;
+        String horarioFinal = null;
+        String[] DataAula = new String[0];
+        String sede = null;
+        String nombreSede = null;
+        String torreOrAv = null;
+        String ambiente = null;
+        Clase clases = new Clase(null,null,null);
+        Curso curso = new Curso(null,null);
+
+        for (int i = 0; i < filasCsv.size(); i++) {
+            String[] array = filasCsv.get(i);
 
             try {
-                Validadores.esCodigoValido(codigoAlumno,Clave.ALUMNO);
-                Validadores.esCodigoValido(codigoProfesor,Clave.PROFESOR);
 
-                String[] DataAula = separarDataAula(dataAula);
+                Validadores.esDataRepetida(valorAnterior,array);
 
-                String sede = DataAula[0];
-                String nombreSede = ciudadMapper.obtenerCiudad(Integer.parseInt(sede));
+                nombreAlumno = array[0];
+                codigoAlumno = array[1];
+                nombreCurso = array[2];
+                dataAula = array[3];
+                codigoProfesor = array[4];
+                nombreProfesor = array[5];
+                diaClase = array[6];
+                horarioInicio = array[7];
+                horarioFinal = array[8];
 
-                // Torre o aula Virtual.
-                String torreOrAv = DataAula[1];
+                Validadores.esCodigoValido(codigoAlumno, Clave.ALUMNO);
+                Validadores.esCodigoValido(codigoProfesor, Clave.PROFESOR);
 
-                String ambiente = DataAula[2];
+                if (valorAnterior == null ||
+                        !valorAnterior[0].equals(nombreAlumno) || !valorAnterior[1].equals(codigoAlumno)) {
 
-                Ambiente A = new Ambiente(sede,nombreSede,ambiente,torreOrAv);
+                    if (valorAnterior != null){
+                        globalData[0].put(codigoAlumno, estudiante);
+                    }
+                    estudiante.oneCurse();
+                    estudiante = new Estudiante(nombreAlumno, codigoAlumno);
+                }
 
-                Clase[] clases = new Clase[1];
+                if (valorAnterior == null ||
+                        !valorAnterior[5].equals(nombreProfesor) || !valorAnterior[4].equals(codigoProfesor)) {
 
-                clases[0] = new Clase(diaClase,horarioInicio,horarioFinal,A);
+                    if (valorAnterior != null){
+                        if (globalData[1].containsKey(codigoProfesor)) {
+                            // La clave ya existe en el mapa
+                            // Agrega aquí el código que quieres ejecutar cuando se detecte la clave repetida
+                            Profesor profesors = (Profesor) globalData[1].get(codigoProfesor);
+                            profesors.agregarCursos(profesor.getCursos());
+                            profesors.OneCurse();
+                            globalData[1].put(codigoProfesor,profesors);
+                        } else {
+                            profesor.OneCurse();
+                            globalData[1].put(codigoProfesor, profesor);
+                        }
+                    }
 
-                Curso[] cursos = new Curso[1];
+                    profesor = new Profesor(nombreAlumno, codigoAlumno);
+                }
 
-                cursos[0] = new Curso(nombreCurso,nombreProfesor,clases);
+                DataAula = separarDataAula(dataAula);
 
-                Estudiante estudiante = new Estudiante(nombreAlumno,codigoAlumno,cursos);
+                sede = DataAula[0];
+                nombreSede = ciudadMapper.obtenerCiudad(Integer.parseInt(sede));
+                torreOrAv = DataAula[1];
+                ambiente = DataAula[2];
 
-                Profesor profesor = new Profesor(nombreProfesor,nombreProfesor,cursos);
+                Ambiente A = new Ambiente(sede, nombreSede, ambiente, torreOrAv);
 
-                globalData[0].put(codigoAlumno, estudiante);
+                clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
+
+                if (!(nombreCurso.equals(valorAnterior[2]))){
+                    curso = new Curso(nombreCurso, nombreProfesor);
+                }
+
+                if (nombreCurso.equals(valorAnterior[2])){
+                    clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
+                }
+
+                curso.agregarClase(clases);
+                estudiante.agregarCurso(curso);
+                profesor.agregarCurso(curso);
+
+            } catch (Exception ex) {
+                errorLog.log(ex.getMessage(), ErrorLog.Level.ERROR, nombreLugar);
+            }
+
+            // guardar el valor actual como valor anterior para la siguiente iteración
+            valorAnterior = array;
+
+        }
+
+        estudiante.oneCurse();
+        globalData[0].put(codigoAlumno, estudiante);
+
+        if (!valorAnterior[5].equals(nombreProfesor) || !valorAnterior[4].equals(codigoProfesor)){
+            globalData[1].put(codigoProfesor, profesor);
+        }else {
+            if (globalData[1].containsKey(codigoProfesor)) {
+                // La clave ya existe en el mapa
+                // Agrega aquí el código que quieres ejecutar cuando se detecte la clave repetida
+                Profesor profesors = (Profesor) globalData[1].get(codigoProfesor);
+                profesors.agregarCursos(profesor.getCursos());
+
+                profesors.OneCurse();
+                globalData[1].put(codigoProfesor,profesors);
+            } else {
+                profesor.OneCurse();
                 globalData[1].put(codigoProfesor, profesor);
-                globalData[2].put(nombreCurso,cursos[0]);
-                globalData[3].put(Integer.toString(contador), clases[0]);
-                contador++;
-
-            }catch (Exception ex){
-                errorLog.log(ex.getMessage(), ErrorLog.Level.ERROR,nombreLugar);
             }
         }
 
@@ -105,9 +175,38 @@ public class ProcesarCsv {
         return partes;
     }
 
-}
+    public static LinkedList<String[]> ordenamientoAlfabetico(LinkedList<String[]> nombres) {
 
-class CiudadMapper {
+        // Definir el comparador para ordenar por apellido y en caso de empate, por nombre,
+        // y en caso de otro empate, por la tercera posición
+        Comparator<String[]> ordenamientoAlfabetico = new Comparator<String[]>() {
+            @Override
+            public int compare(String[] nombre1, String[] nombre2) {
+                String[] apellidoNombre1 = nombre1[0].split(",");
+                String[] apellidoNombre2 = nombre2[0].split(",");
+                int comparacionApellido = apellidoNombre1[0].compareTo(apellidoNombre2[0]);
+                if (comparacionApellido == 0) {
+                    int comparacionNombre = apellidoNombre1[1].compareTo(apellidoNombre2[1]);
+                    if (comparacionNombre == 0) {
+                        return nombre1[2].compareTo(nombre2[2]);
+                    }
+                    return comparacionNombre;
+                }
+                return comparacionApellido;
+            }
+        };
+
+        // Ordenar el LinkedList por apellido y en caso de empate, por nombre,
+        // y en caso de otro empate, por la tercera posición
+        Collections.sort(nombres, ordenamientoAlfabetico);
+
+        // Devolver el LinkedList ordenado
+        return nombres;
+    }
+
+
+}
+    class CiudadMapper {
     private Map<Integer, String> ciudades;
 
     public CiudadMapper() {

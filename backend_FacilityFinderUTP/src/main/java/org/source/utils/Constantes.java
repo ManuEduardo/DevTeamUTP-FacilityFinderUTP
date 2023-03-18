@@ -36,7 +36,7 @@ public class Constantes {
     private static ProcesarCsv totalData = new ProcesarCsv(lecturaCsv.leer());
 
     public static void main(String[] args) throws IOException, CsvException {
-        Estudiante Juan = (Estudiante) totalData()[0].get("U22207603");
+        Estudiante Juan = (Estudiante) totalData()[0].get("U19200293");
     }
 
     public static HashMap <String,Object>[] totalData() throws IOException, CsvException {return totalData.createData();}

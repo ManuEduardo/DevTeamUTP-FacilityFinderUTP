@@ -35,5 +35,26 @@ public class Validadores {
         return true;
     }
 
+    public static boolean esDataRepetida(String[] arrayAnterior, String[] arrayActual) throws DataIgualException {
+
+        String mensajeDataRepetida = "Excepción en la data: La data ingresada se repite.";
+
+        if (arrayAnterior != null) {
+            boolean iguales = true;
+            for (int i = 0; i < arrayAnterior.length; i++) {
+                if (!arrayAnterior[i].equals(arrayActual[i])) {
+                    iguales = false;
+                    break;
+                }
+            }
+
+            if (iguales) {
+                System.out.println("Las matrices son iguales.");
+                throw new DataIgualException(String.format(mensajeDataRepetida));
+            }
+        }
+
+        return true;
+    }
 }
 
