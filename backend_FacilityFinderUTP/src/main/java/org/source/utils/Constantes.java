@@ -1,20 +1,17 @@
 package org.source.utils;
-
-import com.opencsv.exceptions.CsvException;
-import org.source.Validaciones.ErrorLog;
-import org.source.Validaciones.Validadores;
 import org.source.modelos.Estudiante;
 import org.source.modelos.Profesor;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
-import static org.source.utils.ProcesarCsv.separarDataAula;
+/**
+ * Esta es la descripción de la clase Constantes:
+ * @author Gabriel Paiva
+ */
 
 public class Constantes {
 

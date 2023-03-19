@@ -5,6 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 
+/**
+ * Esta es la descripción de la clase LecturaCsv:
+ * @author Manuel Sanchez Suyon
+ * @Editado: Gabriel Paiva
+ */
+
 public class LecturaCsv {
     private final String UrlScv;
     final String SEPARADOR = ";";

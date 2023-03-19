@@ -11,9 +11,15 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * Esta es la descripción de la clase FuncionalidadServicios:
+ * @author Gabriel Paiva
+ */
 
 public class FuncionalidadServicios {
 
@@ -79,14 +85,14 @@ public class FuncionalidadServicios {
             dataMasCercano[1] = cursoMasCercano.getNombreCurso();
             dataMasCercano[2] = claseMasCercana.getAmbiente().getNombreSede();
 
-            dataMasCercano[4] = claseMasCercana.getAmbiente().getTorreOrNumeroAV();
+            dataMasCercano[4] = claseMasCercana.getAmbiente().getTorreOrAV();
             if (!dataMasCercano[4].equals("AV")){
                 dataMasCercano[3] = claseMasCercana.getAmbiente().getNombreSede().substring(1);
             }else {
                 dataMasCercano[3] = dataMasCercano[4];
             }
-            dataMasCercano[5] = claseMasCercana.getAmbiente().getAmbiente();
-            dataMasCercano[6] = claseMasCercana.HorarioClase();
+            dataMasCercano[5] = claseMasCercana.getAmbiente().getAmbienteDeClase();
+            dataMasCercano[6] = claseMasCercana.getHorarioClase();
             dataMasCercano[7] = dataMasCercano[3];
             dataMasCercano[8] = claseMasCercana.getDiaSemana();
 
@@ -108,7 +114,9 @@ public class FuncionalidadServicios {
                     String HoraFinal = clases[j].getHoraFinal();
                     String DiaSemanaClase = clases[j].getDiaSemana();
 
-                    esHoraCLase = esHoraDeClase(HoraInicio,HoraFinal);
+                    if (DiaSemanaClase.equals(obtenerDiaSemanaActual())){
+                        esHoraCLase = esHoraDeClase(HoraInicio,HoraFinal);
+                    }
 
                     if (esHoraCLase){
                         claseMasCercana = clases[j];
@@ -139,14 +147,14 @@ public class FuncionalidadServicios {
             dataMasCercano[1] = cursoMasCercano.getNombreCurso();
             dataMasCercano[2] = claseMasCercana.getAmbiente().getNombreSede();
 
-            dataMasCercano[4] = claseMasCercana.getAmbiente().getTorreOrNumeroAV();
+            dataMasCercano[4] = claseMasCercana.getAmbiente().getTorreOrAV();
             if (!dataMasCercano[4].equals("AV")){
                 dataMasCercano[3] = claseMasCercana.getAmbiente().getNombreSede().substring(1);
             }else {
                 dataMasCercano[3] = dataMasCercano[4];
             }
-            dataMasCercano[5] = claseMasCercana.getAmbiente().getAmbiente();
-            dataMasCercano[6] = claseMasCercana.HorarioClase();
+            dataMasCercano[5] = claseMasCercana.getAmbiente().getAmbienteDeClase();
+            dataMasCercano[6] = claseMasCercana.getHorarioClase();
             dataMasCercano[7] = dataMasCercano[3];
             dataMasCercano[8] = claseMasCercana.getDiaSemana();
 
@@ -156,20 +164,12 @@ public class FuncionalidadServicios {
     }
 
     public static boolean esHoraDeClase(String horaInicio, String horaFin) {
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            Date horaActual = new Date();
-            Date inicioClase = format.parse(horaInicio);
-            Date finClase = format.parse(horaFin);
-            if (horaActual.after(inicioClase) && horaActual.before(finClase)) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        LocalTime horaActual = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime inicioClase = LocalTime.parse(horaInicio, formatter);
+        LocalTime finClase = LocalTime.parse(horaFin, formatter);
+        return horaActual.isAfter(inicioClase) && horaActual.isBefore(finClase);
     }
-
 
     public static DayOfWeek convertirDia(String diaClase) {
         Map<String, String> dias = new HashMap<>();
@@ -267,5 +267,29 @@ public class FuncionalidadServicios {
             return minutosHastaLlegada;
         }
         return minutosHastaLlegada;
+    }
+
+    public static String obtenerDiaSemanaActual() {
+        Calendar calendario = Calendar.getInstance();
+        int diaSemana = calendario.get(Calendar.DAY_OF_WEEK);
+
+        switch(diaSemana) {
+            case Calendar.MONDAY:
+                return "Lunes";
+            case Calendar.TUESDAY:
+                return "Martes";
+            case Calendar.WEDNESDAY:
+                return "Miércoles";
+            case Calendar.THURSDAY:
+                return "Jueves";
+            case Calendar.FRIDAY:
+                return "Viernes";
+            case Calendar.SATURDAY:
+                return "Sábado";
+            case Calendar.SUNDAY:
+                return "Domingo";
+            default:
+                return "";
+        }
     }
 }

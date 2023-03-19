@@ -6,6 +6,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Esta es la descripción de la clase TextUTP:
+ */
+
 public class TextUTP {
 
     public enum OS {WINDOWS, LINUX};

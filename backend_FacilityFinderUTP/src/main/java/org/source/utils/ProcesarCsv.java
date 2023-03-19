@@ -9,6 +9,11 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Esta es la descripción de la clase ProcesarCsv:
+ * @author Gabriel Paiva
+ */
+
 public class ProcesarCsv {
 
     // Lista enlazada de filas de datos CSV
@@ -84,7 +89,7 @@ public class ProcesarCsv {
                     if (!valorAnterior[0].equals("")){
                         globalData[0].put(valorAnterior[1], estudiante);
                     }
-                    estudiante.oneCurse();
+                    estudiante.aEliminarCursosDuplicados();
                     estudiante = new Estudiante(nombreAlumno, codigoAlumno);
                 }
 
@@ -96,11 +101,11 @@ public class ProcesarCsv {
                             // La clave ya existe en el mapa
                             // Agrega aquí el código que quieres ejecutar cuando se detecte la clave repetida
                             Profesor profesors = (Profesor) globalData[1].get(codigoProfesor);
-                            profesors.agregarCursos(profesor.getCursos());
-                            profesors.OneCurse();
+                            profesors.setAgregarNuevosCursos(profesor.getCursos());
+                            profesors.aEliminarCursosDuplicados();
                             globalData[1].put(valorAnterior[4], profesors);
                         } else {
-                            profesor.OneCurse();
+                            profesor.aEliminarCursosDuplicados();
                             globalData[1].put(valorAnterior[4], profesor);
                         }
                     }
@@ -129,8 +134,7 @@ public class ProcesarCsv {
                             curso = new Curso(nombreCurso, nombreProfesor);
                         }
 
-                        if ((!diaClase.equals(valorAnterior[6]))||
-                                (diaClase.equals(valorAnterior[6]) && (!horarioInicio.equals(valorAnterior[7])))){
+                        if (!diaClase.equals(valorAnterior[6]) || !horarioInicio.equals(valorAnterior[7])){
                             clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
                         }
                     }else {
@@ -140,9 +144,9 @@ public class ProcesarCsv {
 
                 }
 
-                curso.agregarClase(clases);
-                estudiante.agregarCurso(curso);
-                profesor.agregarCurso(curso);
+                curso.setAgregarClase(clases);
+                estudiante.setAgregarCurso(curso);
+                profesor.setAgregarCurso(curso);
 
             } catch (Exception ex) {
                 if (!valorAnterior[0].equals("")){
@@ -155,7 +159,7 @@ public class ProcesarCsv {
 
         }
 
-        estudiante.oneCurse();
+        estudiante.aEliminarCursosDuplicados();
         globalData[0].put(codigoAlumno, estudiante);
 
         if (!valorAnterior[5].equals(nombreProfesor) || !valorAnterior[4].equals(codigoProfesor)){
@@ -165,12 +169,12 @@ public class ProcesarCsv {
                 // La clave ya existe en el mapa
                 // Agrega aquí el código que quieres ejecutar cuando se detecte la clave repetida
                 Profesor profesors = (Profesor) globalData[1].get(codigoProfesor);
-                profesors.agregarCursos(profesor.getCursos());
+                profesors.setAgregarNuevosCursos(profesor.getCursos());
 
-                profesors.OneCurse();
+                profesors.aEliminarCursosDuplicados();
                 globalData[1].put(codigoProfesor,profesors);
             } else {
-                profesor.OneCurse();
+                profesor.aEliminarCursosDuplicados();
                 globalData[1].put(codigoProfesor, profesor);
             }
         }
@@ -222,33 +226,5 @@ public class ProcesarCsv {
         // Devolver el LinkedList ordenado
         return nombres;
     }
-
-
-}
-    class CiudadMapper {
-    private Map<Integer, String> ciudades;
-
-    public CiudadMapper() {
-        ciudades = new HashMap<>();
-        ciudades.put(45, "Chiclayo");
-        // Puedes agregar más ciudades a medida que sea necesario
-    }
-
-    public String obtenerCiudad(int valor) {
-        return ciudades.getOrDefault(valor, "Ciudad desconocida");
-    }
 }
 
-class SignificadoAorAV {
-    private Map<String, String> AorAV;
-
-    public SignificadoAorAV() {
-        AorAV = new HashMap<>();
-        AorAV.put("A", "Ambiente");
-        AorAV.put("AV", "Ambiente Virtual");
-    }
-
-    public String obtenerSignificado(int valor) {
-        return AorAV.getOrDefault(valor, null);
-    }
-}

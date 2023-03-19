@@ -4,11 +4,7 @@ import com.google.gson.Gson;
 import com.opencsv.exceptions.CsvException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.source.modelos.Estudiante;
-import org.source.modelos.Profesor;
 import org.source.utils.Clave;
-import org.source.utils.Constantes;
-import org.source.utils.ProcesarCsv;
 import org.source.utils.QueryToMap;
 
 import java.io.IOException;
@@ -16,6 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.source.utils.FuncionalidadServicios.claseMasCercana;
+
+/**
+ * Esta es la descripción de la clase ServicioSalonEstudiante:
+ * @author Manuel Sanchez Suyon
+ * @Editado: Gabriel Paiva
+ */
+
 
 public class ServicioSalonEstudiante implements HttpHandler {
 
@@ -85,7 +88,7 @@ public class ServicioSalonEstudiante implements HttpHandler {
 
     public static void main(String[] args) throws IOException {
         //Prueba
-        String[] cursoMasCercano = claseMasCercana("U19200293", Clave.ALUMNO);
+        String[] cursoMasCercano = claseMasCercana("U22207603", Clave.ALUMNO);
 
         String profesor = cursoMasCercano[0];
         String curso = cursoMasCercano[1];
