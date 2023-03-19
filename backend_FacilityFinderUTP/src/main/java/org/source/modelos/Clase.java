@@ -18,6 +18,9 @@ public class Clase {
         this.ambiente = ambiente;
     }
 
+    public Clase() {
+    }
+
     public Clase(String diaSemana, String horaInicio, String horaFinal) {
         DiaSemana = diaSemana;
         HoraInicio = horaInicio;

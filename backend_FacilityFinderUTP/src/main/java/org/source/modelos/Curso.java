@@ -7,6 +7,9 @@ public class Curso {
     // Clases a la semana.
     private Clase[] clases;
 
+    public Curso() {
+    }
+
     public Curso(String nombreCurso, String profesor, Clase[] clases) {
         NombreCurso = nombreCurso;
         this.profesor = profesor;

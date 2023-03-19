@@ -32,7 +32,11 @@ public class ProcesarCsv {
         globalData[1] = new HashMap<String, Object>();
 
         int contador = 0;
-        String[] valorAnterior = null;
+        String[] valorAnterior = new String[9];
+
+        for (int i = 0; i < valorAnterior.length; i++) {
+            valorAnterior[i] = "";
+        }
 
         Estudiante estudiante = new Estudiante(null,null);
         Profesor profesor = new Profesor(null, null);
@@ -74,30 +78,30 @@ public class ProcesarCsv {
                 Validadores.esCodigoValido(codigoAlumno, Clave.ALUMNO);
                 Validadores.esCodigoValido(codigoProfesor, Clave.PROFESOR);
 
-                if (valorAnterior == null ||
+                if (valorAnterior[0].equals("") ||
                         !valorAnterior[0].equals(nombreAlumno) || !valorAnterior[1].equals(codigoAlumno)) {
 
-                    if (valorAnterior != null){
-                        globalData[0].put(codigoAlumno, estudiante);
+                    if (!valorAnterior[0].equals("")){
+                        globalData[0].put(valorAnterior[1], estudiante);
                     }
                     estudiante.oneCurse();
                     estudiante = new Estudiante(nombreAlumno, codigoAlumno);
                 }
 
-                if (valorAnterior == null ||
+                if (valorAnterior[0].equals("") ||
                         !valorAnterior[5].equals(nombreProfesor) || !valorAnterior[4].equals(codigoProfesor)) {
 
-                    if (valorAnterior != null){
+                    if (!valorAnterior[0].equals("")){
                         if (globalData[1].containsKey(codigoProfesor)) {
                             // La clave ya existe en el mapa
                             // Agrega aquí el código que quieres ejecutar cuando se detecte la clave repetida
                             Profesor profesors = (Profesor) globalData[1].get(codigoProfesor);
                             profesors.agregarCursos(profesor.getCursos());
                             profesors.OneCurse();
-                            globalData[1].put(codigoProfesor,profesors);
+                            globalData[1].put(valorAnterior[4], profesors);
                         } else {
                             profesor.OneCurse();
-                            globalData[1].put(codigoProfesor, profesor);
+                            globalData[1].put(valorAnterior[4], profesor);
                         }
                     }
 
@@ -115,12 +119,25 @@ public class ProcesarCsv {
 
                 clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
 
-                if (!(nombreCurso.equals(valorAnterior[2]))){
+                if (valorAnterior[2].equals("")){
                     curso = new Curso(nombreCurso, nombreProfesor);
-                }
-
-                if (nombreCurso.equals(valorAnterior[2])){
                     clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
+                }else {
+
+                    if (codigoAlumno.equals(valorAnterior[2])){
+                        if (!(nombreCurso.equals(valorAnterior[2]))){
+                            curso = new Curso(nombreCurso, nombreProfesor);
+                        }
+
+                        if ((!diaClase.equals(valorAnterior[6]))||
+                                (diaClase.equals(valorAnterior[6]) && (!horarioInicio.equals(valorAnterior[7])))){
+                            clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
+                        }
+                    }else {
+                        curso = new Curso(nombreCurso, nombreProfesor);
+                        clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
+                    }
+
                 }
 
                 curso.agregarClase(clases);
@@ -128,7 +145,7 @@ public class ProcesarCsv {
                 profesor.agregarCurso(curso);
 
             } catch (Exception ex) {
-                if (valorAnterior != null){
+                if (!valorAnterior[0].equals("")){
                     errorLog.log(ex.getMessage(), ErrorLog.Level.ERROR, nombreLugar);
                 }
             }

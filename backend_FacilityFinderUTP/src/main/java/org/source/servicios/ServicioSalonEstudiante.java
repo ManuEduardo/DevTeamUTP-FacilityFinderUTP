@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.source.modelos.Estudiante;
 import org.source.modelos.Profesor;
+import org.source.utils.Clave;
 import org.source.utils.Constantes;
 import org.source.utils.ProcesarCsv;
 import org.source.utils.QueryToMap;
@@ -13,6 +14,8 @@ import org.source.utils.QueryToMap;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.source.utils.FuncionalidadServicios.claseMasCercana;
 
 public class ServicioSalonEstudiante implements HttpHandler {
 
@@ -56,17 +59,18 @@ public class ServicioSalonEstudiante implements HttpHandler {
 
         //Devuelve todos los valores null si es que hubo algún error
 
-        //AQUI EMPIEZA TU MAGIA
         // Se obtiene los datos del curso, el cual el profesor lo tiene más cercano.
-        String[] cursoMasCercano = null;
+        String[] cursoMasCercano = claseMasCercana(codigoEstudiante, Clave.ALUMNO);
 
         String profesor = cursoMasCercano[0];
         String curso = cursoMasCercano[1];
-        String pabellon = cursoMasCercano[2].substring(0,1);
-        String piso = cursoMasCercano[2].substring(1,3);;
-        String aula = cursoMasCercano[2].substring(3);;
-        String horario = cursoMasCercano[3];
+        String sede = cursoMasCercano[2];
+        String pabellon = cursoMasCercano[3];
+        String piso = cursoMasCercano[4];
+        String aula = cursoMasCercano[5];
+        String horario = cursoMasCercano[6];
         String torre = pabellon;
+        String DiaSemana = cursoMasCercano[8];
 
         Map<String, Object> informacionClase = new HashMap<>();
         informacionClase.put("profesor", profesor);
@@ -77,5 +81,30 @@ public class ServicioSalonEstudiante implements HttpHandler {
         informacionClase.put("horario", horario);
         informacionClase.put("torre", torre);
         return informacionClase;
+    }
+
+    public static void main(String[] args) throws IOException {
+        //Prueba
+        String[] cursoMasCercano = claseMasCercana("U19200293", Clave.ALUMNO);
+
+        String profesor = cursoMasCercano[0];
+        String curso = cursoMasCercano[1];
+        String sede = cursoMasCercano[2];
+        String pabellon = cursoMasCercano[3];
+        String piso = cursoMasCercano[4];
+        String aula = cursoMasCercano[5];
+        String horario = cursoMasCercano[6];
+        String torre = pabellon;
+        String DiaSemana = cursoMasCercano[8];
+
+        System.out.println("profesor = " + profesor);
+        System.out.println("curso = " + curso);
+        System.out.println("sede = " + sede);
+        System.out.println("pabellon = " + pabellon);
+        System.out.println("piso = " + piso);
+        System.out.println("aula = " + aula);
+        System.out.println("horario = " + horario);
+        System.out.println("torre = " + torre);
+        System.out.println("DiaSemana = " + DiaSemana);
     }
 }

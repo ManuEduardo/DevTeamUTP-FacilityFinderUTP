@@ -36,6 +36,10 @@ public class Constantes {
     // En el tercero la data de los cursos, la cuarta de las clases que habrán.
     private static ProcesarCsv totalData = new ProcesarCsv(lecturaCsv.leer());
 
+    public static void main(String[] args) throws IOException {
+        totalData.createData();
+    }
+
     public static HashMap <String,Object>[] dataProcesada() throws IOException {
         return totalData.createData();
     }
