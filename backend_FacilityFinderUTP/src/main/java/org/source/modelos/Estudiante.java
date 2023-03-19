@@ -28,6 +28,7 @@ public class Estudiante extends PersonaUniversitaria{
     }
 
     public void oneCurse() {
+
         // Convertir el array de cursos en un HashSet para eliminar duplicados
         HashSet<Curso> cursosUnicos = new HashSet<Curso>();
         for (Curso curso : cursos) {

@@ -221,10 +221,9 @@ public class FuncionalidadServicios {
                     long diferencia2 = date4.getTime() - date3.getTime();
 
                     minutosHastaLlegada = (int) (diferencia / (1000 * 60) + diferencia2 / (1000 * 60)) + (5*1440);
+                }else{
+                    minutosHastaLlegada = (int) (diferencia / (1000 * 60));
                 }
-
-                minutosHastaLlegada = (int) (diferencia / (1000 * 60));
-
 
             } catch (Exception e) {
                 e.printStackTrace();

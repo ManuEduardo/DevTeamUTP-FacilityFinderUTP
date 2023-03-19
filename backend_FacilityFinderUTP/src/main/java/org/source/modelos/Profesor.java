@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 public class Profesor extends PersonaUniversitaria{
 
-    //Cursos que imparte el profesor'.
+    //Cursos que imparte el profesor.
     private Curso[] cursos;
 
     public Profesor(String nombre, String codigo, Curso[] cursos) {

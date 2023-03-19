@@ -45,7 +45,6 @@ public class Constantes {
     }
 
     public static HashMap <String,Profesor> dataProfesor() throws IOException {
-
         return convertirHashMapProfesor(dataProcesada()[1]);
     }
 
