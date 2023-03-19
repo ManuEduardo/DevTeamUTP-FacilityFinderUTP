@@ -4,16 +4,21 @@ import com.google.gson.Gson;
 import com.opencsv.exceptions.CsvException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.source.modelos.Estudiante;
-import org.source.utils.Constantes;
+import org.source.utils.Clave;
 import org.source.utils.QueryToMap;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.source.utils.ProcesarCsv.buscarClaseMasCercana;
-import static org.source.utils.ProcesarCsv.buscarProfesor;
+import static org.source.utils.FuncionalidadServicios.claseMasCercana;
+
+/**
+ * Esta es la descripción de la clase ServicioSalonProfesor:
+ * @author Manuel Sanchez Suyon
+ * @Editado: Gabriel Paiva
+ */
+
 
 public class ServicioSalonProfesor implements HttpHandler {
     @Override
@@ -49,15 +54,19 @@ public class ServicioSalonProfesor implements HttpHandler {
         Map<String, Object> informacionClase = new HashMap<>();
 
         // Se obtiene los datos del curso, el cual el profesor lo tiene más cercano.
-        String[] cursoMasCercano = buscarProfesor(codigoProfesor, Constantes.dataProfesor());
+        String[] cursoMasCercano = claseMasCercana(codigoProfesor, Clave.PROFESOR);
 
+        String profesor = cursoMasCercano[0];
         String curso = cursoMasCercano[1];
-        String pabellon = cursoMasCercano[2].substring(0,1);
-        String piso = cursoMasCercano[2].substring(1,3);;
-        String aula = cursoMasCercano[2].substring(3);;
-        String horario = cursoMasCercano[3];
+        String sede = cursoMasCercano[2];
+        String pabellon = cursoMasCercano[3];
+        String piso = cursoMasCercano[4];
+        String aula = cursoMasCercano[5];
+        String horario = cursoMasCercano[6];
         String torre = pabellon;
+        String DiaSemana = cursoMasCercano[8];
 
+        informacionClase.put("profesor", profesor);
         informacionClase.put("curso", curso);
         informacionClase.put("pabellon", pabellon);
         informacionClase.put("piso", piso);
@@ -66,5 +75,6 @@ public class ServicioSalonProfesor implements HttpHandler {
         informacionClase.put("torre", torre);
         return informacionClase;
     }
+
 
 }

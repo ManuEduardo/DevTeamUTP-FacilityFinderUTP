@@ -25,7 +25,19 @@
             <artifactId>opencsv</artifactId>
             <version>5.7.1</version>
         </dependency>
+        <dependency>
+            <groupId>user.java.time</groupId>
+            <artifactId>user.java.time</artifactId>
+            <version>2020.267.10158</version>
+        </dependency>
 
     </dependencies>
+    <repositories>
+        <repository>
+            <id>clojars</id>
+            <name>Clojars</name>
+            <url>https://repo.clojars.org/</url>
+        </repository>
+    </repositories>
 
 </project>

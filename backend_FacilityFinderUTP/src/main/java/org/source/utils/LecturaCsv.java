@@ -5,9 +5,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 
+/**
+ * Esta es la descripción de la clase LecturaCsv:
+ * @author Manuel Sanchez Suyon
+ * @Editado: Gabriel Paiva
+ */
+
 public class LecturaCsv {
     private final String UrlScv;
-    final String SEPARADOR = ",";
+    final String SEPARADOR = ";";
     BufferedReader bufferLectura = null;
 
     public LecturaCsv(String urlScv) {
@@ -24,10 +30,14 @@ public class LecturaCsv {
             // Leer una linea del archivo
             String linea = bufferLectura.readLine();
 
+            // La primera linea del csv no es data, son los nombres de las filas del csv. Por ello la pasamos.
+            linea = bufferLectura.readLine();
+
             while (linea != null) {
-                // Sepapar la linea leída con el separador definido previamente
                 String[] campos = linea.split(SEPARADOR);
-                arrayCsv.add(campos);
+                // En este caso Solo almacenar las variables que usaremos.
+                String[] FiltroCampos = new String[]{campos[4], campos[6], campos[28], campos[33], campos[41], campos[42], campos[43], campos[44], campos[45]};
+                arrayCsv.add(FiltroCampos);
                 // Volver a leer otra línea del fichero
                 linea = bufferLectura.readLine();
             }

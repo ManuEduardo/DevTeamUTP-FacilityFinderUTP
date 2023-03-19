@@ -1,23 +1,34 @@
 package org.source.modelos;
 
-public abstract class PersonaUniversitaria {
-    private String nombre;
-    private String codigo;
+/**
+ * Esta es la descripción de la clase PersonaUniversitaria.
+ * Se utiliza como superclase de Estudiante y Profesor.
+ * @author Gabriel Paiva
+ */
 
+public abstract class PersonaUniversitaria {
+
+    /** Atributos de la clase PersonaUniversitaria. */
+    private String nombre; /* Nombre de la persona universitaria */
+    private String codigo; /* Código de la persona universitaria  */
+
+    /** Constructor utilizado en los super(). */
     public PersonaUniversitaria(String nombre, String codigo) {
         this.nombre = nombre;
         this.codigo = codigo;
     }
 
-    public PersonaUniversitaria() {
-
+    /** Getter and setters */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
-
-    public String getNombre() {
-        return nombre;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
-
     public String getCodigo() {
         return codigo;
+    }
+    public String getNombre() {
+        return nombre;
     }
 }

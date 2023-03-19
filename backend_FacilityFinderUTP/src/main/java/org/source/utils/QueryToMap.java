@@ -3,6 +3,11 @@ package org.source.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Esta es la descripción de la clase QueryToMap:
+ * @author Manuel Sanchez Suyon
+ */
+
 public class QueryToMap {
     public static Map<String, String> queryToMap(String query) {
         Map<String, String> result = new HashMap<>();
