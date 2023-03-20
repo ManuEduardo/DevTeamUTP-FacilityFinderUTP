@@ -8,6 +8,60 @@ import java.util.List;
 
 /**
  * Esta es la descripción de la clase TextUTP:
+ * Esta es una clase de Java llamada "TextUTP", que proporciona una serie de métodos estáticos
+ * para leer y escribir texto en archivos. La clase también define un enumerador llamado "OS"
+ * que representa el sistema operativo en el que se está ejecutando el programa y se utiliza
+ * en algunos métodos para determinar la forma en que se deben procesar los caracteres de
+ * fin de línea.
+ *
+ * La clase incluye los siguientes métodos:
+ *
+ * @read (String filename): Este método toma un nombre de archivo como parámetro y devuelve
+ * una cadena que contiene el contenido del archivo.
+ *
+ * @readlines (String filename, OS os): Este método toma un nombre de archivo y un objeto de tipo
+ * "OS" como parámetros y devuelve una lista de cadenas, una para cada línea del archivo.
+ * El parámetro "os" se utiliza para determinar la forma en que se deben procesar los caracteres
+ * de fin de línea.
+ *
+ * @readlines (String filename): Este método es similar al anterior, pero utiliza el valor por
+ * defecto "OS.LINUX" para el parámetro "os".
+ *
+ * @readlinesAsArray (String filename, OS os): Este método es similar a readlines(), pero devuelve
+ * un arreglo de cadenas en lugar de una lista.
+ *
+ * @readlinesAsArray (String filename): Este método es similar al anterior, pero utiliza el
+ * valor por defecto "OS.LINUX" para el parámetro "os".
+ *
+ * @append (String data, String filename): Este método toma una cadena de texto y un nombre de archivo
+ * como parámetros y añade el contenido de la cadena al final del archivo.
+ *
+ * @append (String[] data, String filename, boolean withNewLine, OS os): Este método toma
+ * un arreglo de cadenas, un nombre de archivo, un indicador booleano que indica si se debe agregar un
+ * carácter de fin de línea después de cada cadena y un objeto de tipo "OS" como parámetros. El método
+ * concatena todas las cadenas del arreglo en una sola cadena, separando cada cadena con un carácter
+ * de fin de línea según la plataforma del sistema operativo.
+ *
+ * @append (String[] data, String filename, boolean withNewLine): Este método es similar al anterior,
+ * pero utiliza el valor por defecto "OS.LINUX" para el parámetro "os".
+ *
+ * @append (String[] data, String filename): Este método es similar al anterior, pero agrega un
+ * carácter de fin de línea después de cada cadena y utiliza el valor por defecto "OS.LINUX" para
+ * el parámetro "os".
+ *
+ * @append (List<String> data, String filename, boolean withNewLine, OS os): Este método es similar al
+ * método anterior, pero toma una lista de cadenas en lugar de un arreglo.
+ *
+ * @append (List<String> data, String filename, boolean withNewLine): Este método es similar al anterior,
+ * pero utiliza el valor por defecto "OS.LINUX" para el parámetro "os".
+ *
+ * @append (List<String> data, String filename): Este método es similar al anterior, pero agrega un
+ * carácter de fin de línea después de cada cadena y utiliza el valor por defecto "OS.LINUX" para el
+ * parámetro "os".
+ *
+ * En resumen, esta clase proporciona una serie de métodos estáticos para leer y escribir texto en
+ * archivos, con opciones para especificar la forma en que se procesan los caracteres de fin de línea
+ * según el sistema operativo.
  */
 
 public class TextUTP {
