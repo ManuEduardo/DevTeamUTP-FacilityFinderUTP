@@ -4,6 +4,8 @@ export type InformacionClase = {
     torre: string;
     profesor: string;
     curso: string;
+    dia: string;
+    sede: string;
 }
 
 export const EmptyInformacionClase: InformacionClase = {
@@ -11,5 +13,7 @@ export const EmptyInformacionClase: InformacionClase = {
     aula: "",
     torre: "",
     profesor: "",
-    curso: ""
+    curso: "",
+    dia: "",
+    sede: "",
 }

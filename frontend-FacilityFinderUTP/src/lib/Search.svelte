@@ -1,20 +1,16 @@
 <script lang="ts">
   import botonBusqueda from "../assets/busqueda.png";
-  import {codigo, tipoCodigo, } from '../store'
+  import {codigo, } from '../store'
   export let getInformacionClase;
 </script>
 <form
-  class=" font-semibold bg-slate-100 p-1 w-min mx-auto my-3 border border-slate-800 rounded-lg flex"
+  class=" font-semibold bg-slate-100 p-1 w-min h-min mx-auto my-auto border border-slate-800 rounded-lg flex"
 >
-  <select name="" id="" class="rounded-l-lg" bind:value={$tipoCodigo}>
-    <option value="U">U</option>
-    <option value="C">C</option>
-  </select>
   <input
-    type="number"
+    type="text"
     name="codigo"
-    class=" p-2 rounded-r-lg"
-    placeholder="00000000"
+    class=" w-32 p-2 rounded-r-lg "
+    placeholder="U00000000"
     bind:value={$codigo}
   />
   <button
