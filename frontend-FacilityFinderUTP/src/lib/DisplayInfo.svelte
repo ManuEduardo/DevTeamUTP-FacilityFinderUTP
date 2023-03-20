@@ -17,8 +17,16 @@
       >
         <tbody class=" w-full">
           <tr>
+            <td class=" font-bold p-2">Dia</td>
+            <td class=" text-right p-2">{$informacionClase.dia}</td>
+          </tr>
+          <tr>
             <td class=" font-bold p-2">Horario</td>
             <td class=" text-right p-2">{$informacionClase.horario}</td>
+          </tr>
+          <tr>
+            <td class=" font-bold p-2">Sede</td>
+            <td class=" text-right p-2">{$informacionClase.sede}</td>
           </tr>
           <tr>
             <td class=" font-bold bg-slate-300 p-2 rounded-l-lg">Aula</td>

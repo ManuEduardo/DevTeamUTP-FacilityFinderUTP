@@ -5,19 +5,23 @@
   import DisplayInfo from "./DisplayInfo.svelte";
   import {EmptyInformacionClase} from '../models';
   import {getInformacionClaseFetch} from '../services/informacionServices'
-  import {codigo, tipoCodigo, informacionClase} from '../store'
+  import {codigo,  informacionClase} from '../store'
 
   let loading = false;
 
   const getInformacionClase = async (event:Event) =>{
     event.preventDefault();
-    if($tipoCodigo == "" || $codigo == null ){
+    if($codigo == "" ){
       alert("Rellena todos los datos")
+      return;
+    }
+    if($codigo[0].toUpperCase() != "U"){
+      alert("Código invalido")
       return;
     }
     loading = true;
     $informacionClase = EmptyInformacionClase;
-    const info = await getInformacionClaseFetch($tipoCodigo, $codigo).finally(()=>loading = false);
+    const info = await getInformacionClaseFetch($codigo).finally(()=>loading = false);
     $informacionClase = info
   }
 
@@ -36,9 +40,9 @@
     </div>
     <img src={flechaAbajo} alt="flecha" class=" mt-2 mx-auto "/>
   </div>
-  <div>
+  <div class=" flex max-w-sm mx-auto">
     <Search getInformacionClase={getInformacionClase}/>
-    <img src={muñeco} alt="imagen Muñeco" class=" w-20 mx-auto">
+    <img src={muñeco} alt="imagen Muñeco" class=" w-24 mx-auto">
   </div>
   <DisplayInfo loading={loading}/>
   <div>

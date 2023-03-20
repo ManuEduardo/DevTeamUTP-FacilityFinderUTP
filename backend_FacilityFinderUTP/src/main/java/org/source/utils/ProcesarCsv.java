@@ -1,393 +1,257 @@
 package org.source.utils;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-import org.source.modelos.Clase;
-import org.source.modelos.Curso;
-import org.source.modelos.Estudiante;
-import org.source.modelos.Profesor;
+import org.source.Validaciones.ErrorLog;
+import org.source.Validaciones.Validadores;
+import org.source.modelos.*;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Esta es la descripción de la clase ProcesarCsv:
+ * Esta clase se encarga de procesar un archivo CSV, lo analiza y crea dos estructuras
+ * de datos (HashMap) con la información que contiene el archivo.
+ * @author Gabriel Paiva
+ */
 
 public class ProcesarCsv {
 
-    public static void main(String[] args) throws IOException, CsvException {
-        String[] cursoMasCercano = buscarProfesor("C2701", Constantes.dataProfesor());
+    // Lista enlazada de filas de datos CSV
+    private final LinkedList<String[]> filasCsv;
 
-        String curso = cursoMasCercano[1];
-        String pabellon = cursoMasCercano[2].substring(0,1);
-        String piso = cursoMasCercano[2].substring(1,3);;
-        String aula = cursoMasCercano[2].substring(3);;
-        String horario = cursoMasCercano[3];
-        String torre = pabellon;
+    private final CiudadMapper ciudadMapper = new CiudadMapper();
+    ErrorLog errorLog = new ErrorLog();
 
-        System.out.println(curso);
-        System.out.println(pabellon);
-        System.out.println(piso);
-        System.out.println(aula);
-        System.out.println(horario);
-        System.out.println(torre);
+    // Constructor
+    public ProcesarCsv(LinkedList<String[]> filasCsv) {
+        this.filasCsv = ordenamientoAlfabetico(filasCsv);
     }
 
+    /**
+     * La función recorre un arreglo de filas de un archivo CSV, realiza algunas operaciones y crea
+     * una estructura de datos compleja basada en esos datos.
+     * @return  Rstructura de datos compleja.
+     * - [0] Una estructura que almacena información de los estudiantes.
+     * - [1] Una estructura que almacena información de los profesores. */
+    public HashMap<String, Object>[] createData() throws IOException {
 
-    // Función que lee un archivo csv y devuelve un ArrayList<String[]>
-    public static List<String[]> leerCsv(String ruta) throws IOException, CsvException {
-        // Crear un lector de archivo csv con la ruta especificada.
-        CSVReader lector = new CSVReader(new FileReader(ruta));
+        // Se crea la data en null, porque posteriormente se utilizará.
+        HashMap<String, Object>[] globalData = new HashMap[2];
 
-        // Leer todas las líneas del archivo csv.
-        List<String[]> filas = lector.readAll();
+        globalData[0] = new HashMap<String, Object>();
+        globalData[1] = new HashMap<String, Object>();
 
-        // Cerrar el lector.
-        lector.close();
+        String[] valorAnterior = new String[9];
 
-        // Devolver la lista de filas leídas.
-        return filas;
-    }
+        Arrays.fill(valorAnterior, "");
 
-    public static Profesor[] leerProfesoresDesdeCsv(String ruta) throws IOException, CsvException {
-        List<String[]> filas = leerCsv(ruta);
-        Map<Profesor, List<Curso>> cursosPorProfesor = new HashMap<>();
+        Estudiante estudiante = new Estudiante(null,null);
+        Profesor profesor = new Profesor(null, null);
 
-        for (String[] fila : filas) {
-            String nombreProfesor = convertirCamelCaseATitulo(fila[0]);
-            String codigoProfesor = fila[1];
-            String nombreCurso = fila[2];
-            String codigoAula = fila[3];
-            String diaSemana = fila[4];
-            String horaInicio = fila[5];
-            String horaFinal = fila[6];
+        String nombreAlumno = null;
+        String codigoAlumno = null;
+        String nombreCurso = null;
+        String dataAula = null;
+        String codigoProfesor = null;
+        String nombreProfesor = null;
+        String diaClase = null;
+        String horarioInicio = null;
+        String horarioFinal = null;
+        String[] DataAula = new String[0];
+        String sede = null;
+        String nombreSede = null;
+        String torreOrAv = null;
+        String ambiente = null;
+        Clase clases = new Clase(null,null,null);
+        Curso curso = new Curso(null,null);
 
-            Clase clase = new Clase(diaSemana, horaInicio, horaFinal, codigoAula);
-            Curso curso = new Curso(nombreCurso, nombreProfesor, new Clase[]{clase});
+        // Se recorre todas las filasCsv.
+        for (String[] array : filasCsv) {
+            try {
 
-            Profesor profesor = new Profesor(nombreProfesor, codigoProfesor, null);
+                //Verificamos que la data a leer no sea repetida.
+                Validadores.esDataRepetida(valorAnterior, array);
 
-            if (!cursosPorProfesor.containsKey(profesor)) {
-                cursosPorProfesor.put(profesor, new ArrayList<>());
-            }
+                // Creamos las principales variables que utilizaremos al instanciar los datos.
+                nombreAlumno = array[0];
+                codigoAlumno = array[1];
+                nombreCurso = array[2];
+                dataAula = array[3];
+                codigoProfesor = array[4];
+                nombreProfesor = array[5];
+                diaClase = array[6];
+                horarioInicio = array[7];
+                horarioFinal = array[8];
 
-            cursosPorProfesor.get(profesor).add(curso);
-        }
+                //Validamos si hay un codigo valido ingresado o no.
+                Validadores.esCodigoValido(codigoAlumno, Clave.ALUMNO);
+                Validadores.esCodigoValido(codigoProfesor, Clave.PROFESOR);
 
-        Profesor[] profesores = new Profesor[cursosPorProfesor.size()];
-        int i = 0;
+                // Em estos validadores lo que se hará es que confirmar en caso los
+                // datos procesados en un array anterior correspondan al mismo alumno,
+                // curso, etc. En estos casos a veces se creará un nuevo profesor o un nuevo
+                // curso, dependiendo si pasa los validadores, lo mismo pasa con las clases.
+                // Ello gracias al array generado llamado "valoranterior", el cual , en caso esté
+                // vació entonces se generarán los datos como si fueran nuevos.
 
-        for (Map.Entry<Profesor, List<Curso>> entry : cursosPorProfesor.entrySet()) {
-            Profesor profesor = entry.getKey();
-            List<Curso> cursos = entry.getValue();
+                if (valorAnterior[0].equals("") ||
+                        !valorAnterior[0].equals(nombreAlumno) || !valorAnterior[1].equals(codigoAlumno)) {
 
-            profesor.setCursos(cursos.toArray(new Curso[0]));
-            profesores[i] = profesor;
-            i++;
-        }
-
-        return profesores;
-    }
-
-    public static Estudiante[] leerEstudiantesDesdeCsv(Profesor[] profesores, String ruta) throws IOException, CsvException {
-        // Leer el archivo CSV.
-        List<String[]> filas = leerCsv(ruta);
-
-        // Crear un array para almacenar los objetos Estudiante.
-        Estudiante[] estudiantes = new Estudiante[filas.size()];
-
-        // Convertir cada fila en un objeto Estudiante.
-        for (int i = 0; i < filas.size(); i++) {
-            String[] fila = filas.get(i);
-            String nombreEstudiante = fila[0];
-            String codigoEstudiante = fila[1];
-            String codigoAula = fila[2];
-            String diaSemana = fila[3];
-            String horaInicio = fila[4];
-            String horaFinal = fila[5];
-
-            // Buscar el objeto Profesor correspondiente.
-            Profesor profesor = null;
-            for (Profesor p : profesores) {
-                if (p.getCodigo().equals(codigoAula)) {
-                    profesor = p;
-                    break;
-                }
-            }
-
-            // Crear el objeto Estudiante y añadirlo al array.
-            Curso[] cursos = new Curso[]{new Curso(obtenerNombreCurso(diaSemana, horaInicio, horaFinal, codigoAula, profesores), obtenerNombreProfesor(diaSemana, horaInicio, horaFinal, codigoAula, profesores), new Clase[]{new Clase(diaSemana, horaInicio, horaFinal, codigoAula)})};
-            Estudiante estudiante = new Estudiante(nombreEstudiante, codigoEstudiante, cursos);
-            estudiantes[i] = estudiante;
-        }
-
-        return estudiantes;
-    }
-
-    public static String obtenerNombreProfesor(String diaSemana, String horaInicio, String horaFinal, String codigoAula, Profesor[] profesores) {
-        for (Profesor profesor : profesores) {
-            for (Curso curso : profesor.getCursos()) {
-                for (Clase clase : curso.getClases()) {
-                    if (clase.getDiaSemana().equals(diaSemana) &&
-                            clase.getHoraInicio().equals(horaInicio) &&
-                            clase.getHoraFinal().equals(horaFinal) &&
-                            clase.getAulaClase().equals(codigoAula)) {
-                        return profesor.getNombre();
+                    if (!valorAnterior[0].equals("")) {
+                        globalData[0].put(valorAnterior[1], estudiante);
                     }
+                    estudiante.aEliminarCursosDuplicados();
+                    estudiante = new Estudiante(nombreAlumno, codigoAlumno);
                 }
-            }
-        }
-        return null;
-    }
 
-    public static String obtenerNombreCurso(String diaSemana, String horaInicio, String horaFinal, String codigoAula, Profesor[] profesores) {
-        for (Profesor profesor : profesores) {
-            for (Curso curso : profesor.getCursos()) {
-                for (Clase clase : curso.getClases()) {
-                    if (clase.getDiaSemana().equals(diaSemana) && clase.getHoraInicio().equals(horaInicio) &&
-                            clase.getHoraFinal().equals(horaFinal) && clase.getAulaClase().equals(codigoAula)) {
-                        return curso.getNombreCurso();
+                if (valorAnterior[0].equals("") ||
+                        !valorAnterior[5].equals(nombreProfesor) || !valorAnterior[4].equals(codigoProfesor)) {
+
+                    if (!valorAnterior[0].equals("")) {
+                        if (globalData[1].containsKey(codigoProfesor)) {
+                            Profesor profesors = (Profesor) globalData[1].get(codigoProfesor);
+                            profesors.setAgregarNuevosCursos(profesor.getCursos());
+                            profesors.aEliminarCursosDuplicados();
+                            globalData[1].put(valorAnterior[4], profesors);
+                        } else {
+                            profesor.aEliminarCursosDuplicados();
+                            globalData[1].put(valorAnterior[4], profesor);
+                        }
                     }
+
+                    profesor = new Profesor(nombreAlumno, codigoAlumno);
+                }
+
+                DataAula = separarDataAula(dataAula);
+
+                sede = DataAula[0];
+                nombreSede = ciudadMapper.obtenerCiudad(Integer.parseInt(sede));
+                torreOrAv = DataAula[1];
+                ambiente = DataAula[2];
+
+                Ambiente A = new Ambiente(sede, nombreSede, ambiente, torreOrAv);
+
+                clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
+
+                if (valorAnterior[2].equals("")) {
+                    curso = new Curso(nombreCurso, nombreProfesor);
+                    clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
+                } else {
+
+                    if (codigoAlumno.equals(valorAnterior[2])) {
+                        if (!(nombreCurso.equals(valorAnterior[2]))) {
+                            curso = new Curso(nombreCurso, nombreProfesor);
+                        }
+
+                        if (!diaClase.equals(valorAnterior[6]) || !horarioInicio.equals(valorAnterior[7])) {
+                            clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
+                        }
+                    } else {
+                        curso = new Curso(nombreCurso, nombreProfesor);
+                        clases = new Clase(diaClase, horarioInicio, horarioFinal, A);
+                    }
+
+                }
+
+                curso.setAgregarClase(clases);
+                estudiante.setAgregarCurso(curso);
+                profesor.setAgregarCurso(curso);
+
+            } catch (Exception ex) {
+                if (!valorAnterior[0].equals("")) {
+                    String nombreLugar = "ProcesarCsv";
+                    errorLog.log(ex.getMessage(), ErrorLog.Level.ERROR, nombreLugar);
                 }
             }
-        }
-        return null;
-    }
 
-    public static String convertirCamelCaseATitulo(String texto) {
-        if (texto == null) {
-            return "";
+            // guardar el valor actual como valor anterior para la siguiente iteración
+            valorAnterior = array;
+
         }
 
-        StringBuilder resultado = new StringBuilder();
-        for (int i = 0; i < texto.length(); i++) {
-            char c = texto.charAt(i);
-            if (Character.isUpperCase(c)) {
-                resultado.append(" ");
-                resultado.append(Character.toUpperCase(c));
+        estudiante.aEliminarCursosDuplicados();
+        globalData[0].put(codigoAlumno, estudiante);
+
+        if (!valorAnterior[5].equals(nombreProfesor) || !valorAnterior[4].equals(codigoProfesor)){
+            globalData[1].put(codigoProfesor, profesor);
+        }else {
+            if (globalData[1].containsKey(codigoProfesor)) {
+                Profesor profesors = (Profesor) globalData[1].get(codigoProfesor);
+                profesors.setAgregarNuevosCursos(profesor.getCursos());
+
+                profesors.aEliminarCursosDuplicados();
+                globalData[1].put(codigoProfesor,profesors);
             } else {
-                resultado.append(c);
+                profesor.aEliminarCursosDuplicados();
+                globalData[1].put(codigoProfesor, profesor);
             }
         }
 
-        String titulo = resultado.toString();
-        return titulo.toUpperCase().charAt(0) + titulo.substring(1) + ".";
+        return globalData;
     }
 
-    public static String[] buscarClaseMasCercana(String codigoEstudiante, Estudiante[] estudiantes) {
-        // Buscar al estudiante en el array
-        Estudiante estudiante = null;
-        for (Estudiante e : estudiantes) {
-            if (e.getCodigo().equals(codigoEstudiante)) {
-                estudiante = e;
-                break;
-            }
-        }
-        if (estudiante == null) {
-            return null;
-        }
+    /**
+     Esta función toma como entrada un código de aula en formato String y lo separa en tres partes: los números
+     que aparecen al inicio, las letras que siguen y los números que aparecen al final, devolviendo un arreglo
+     con estas tres partes. Si el código de aula no cumple con un patrón válido, la función lanzará una excepción.
+     @param codigoAula El código de aula que se desea separar en tres partes.
+     @return Un arreglo de tres elementos que contiene las tres partes del código de aula.
+     @throws IllegalArgumentException Si el código de aula no cumple con un patrón válido. */
+    static String[] separarDataAula(String codigoAula) {
 
-        // Obtener la fecha y hora actual
-        LocalDate fechaActual = LocalDate.now();
-        LocalTime horaActual = LocalTime.now();
+        String[] partes = new String[3];
 
-        // Obtener el día de la semana actual
-        DayOfWeek diaActual = fechaActual.getDayOfWeek();
-
-        // Obtener la lista de clases del estudiante
-        List<Clase> clases = new ArrayList<>();
-        for (Curso curso : estudiante.getCursos()) {
-            clases.addAll(List.of(curso.getClases()));
+        // Expresión regular para separar en 3 partes: números, letras, números
+        Pattern patron = Pattern.compile("(\\d+)([A-Za-z]+)(\\d+)");
+        Matcher matcher = patron.matcher(codigoAula);
+        if (matcher.matches()) {
+            partes[0] = matcher.group(1); // Primera parte: números
+            partes[1] = matcher.group(2); // Segunda parte: letras
+            partes[2] = matcher.group(3); // Tercera parte: números después de las letras
+        } else {
+            // Si no se encuentra un patrón válido, lanzamos una excepción
+            throw new IllegalArgumentException("El código de aula es inválido");
         }
 
-        // Obtener la clase más cercana
-        Clase claseMasCercana = null;
-        long minutosMasCercanos = Long.MAX_VALUE;
-        for (Clase clase : clases) {
-            // Obtener el día de la semana de la clase
-            DayOfWeek diaClase = DayOfWeek.valueOf(convertirPalabra(clase.getDiaSemana()).toUpperCase());
-
-            // Si el día de la clase es anterior al día actual, considerar la próxima clase en la siguiente semana
-            if (diaClase.getValue() < diaActual.getValue()) {
-                diaClase = diaClase.plus(7);
-            }
-
-            // Si el día de la clase es el mismo que el día actual o en el futuro
-            if (diaClase.getValue() == diaActual.getValue()) {
-                // Obtener la hora de inicio de la clase
-                LocalTime horaInicio = LocalTime.parse(clase.getHoraInicio(), DateTimeFormatter.ISO_LOCAL_TIME);
-
-                // Si la hora de inicio ya pasó hoy, considerar la próxima clase en la siguiente semana
-                if (horaInicio.isBefore(horaActual)) {
-                    diaClase = diaClase.plus(7);
-                }
-
-                // Calcular los minutos entre la hora actual y la hora de inicio de la clase
-                long minutos = horaActual.until(horaInicio, java.time.temporal.ChronoUnit.MINUTES);
-
-                // Si es la clase más cercana hasta ahora, actualizar los valores
-                if (claseMasCercana == null || minutos < minutosMasCercanos) {
-                    claseMasCercana = clase;
-                    minutosMasCercanos = minutos;
-                }
-            }
-        }
-
-        // Si se encontró una clase cercana, devolver sus datos en un array de Strings
-        if (claseMasCercana != null) {
-            String[] resultado = new String[4];
-            resultado[0] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), estudiante.getCursos()))[0];
-            resultado[1] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), estudiante.getCursos()))[1];
-            resultado[2] = claseMasCercana.getAulaClase();
-            resultado[3] = claseMasCercana.getHoraInicio() + " - " + claseMasCercana.getHoraFinal();
-            return resultado;
-        }
-
-        // Si no se encontró ninguna clase cercana, devolver null
-        return null;
+        return partes;
     }
 
-    public static String[] buscarProfesor(String codigoProfesor, Profesor[] profesores) {
+    /**
+     Esta función ordena alfabéticamente una LinkedList de nombres con base en los apellidos,
+     nombres y una tercera posición. El método utiliza un comparador anónimo para
+     definir el criterio de ordenamiento por apellido, nombre y tercera posición en caso de empate.
+     @param nombres  El parámetro de entrada es una LinkedList de arrays de String,
+     donde cada array contiene el nombre completo y la tercera posición.
+     @return  Devuelve la LinkedList ordenado. */
+    public static LinkedList<String[]> ordenamientoAlfabetico(LinkedList<String[]> nombres) {
 
-        Profesor profesor = null;
-        for (Profesor e : profesores) {
-            if (e.getCodigo().equals(codigoProfesor)) {
-                profesor = e;
-                break;
-            }
-        }
-        if (profesor == null) {
-            return null;
-        }
-
-        // Obtener la fecha y hora actual
-        LocalDate fechaActual = LocalDate.now();
-        LocalTime horaActual = LocalTime.now();
-
-        // Obtener el día de la semana actual
-        DayOfWeek diaActual = fechaActual.getDayOfWeek();
-
-        // Obtener la lista de clases del profesor
-        List<Clase> clases = new ArrayList<>();
-        for (Curso curso : profesor.getCursos()) {
-            clases.addAll(List.of(curso.getClases()));
-        }
-
-        // Obtener la clase más cercana
-        Clase claseMasCercana = null;
-        long minutosMasCercanos = Long.MAX_VALUE;
-        for (Clase clase : clases) {
-            // Obtener el día de la semana de la clase
-            DayOfWeek diaClase = DayOfWeek.valueOf(convertirPalabra(clase.getDiaSemana()).toUpperCase());
-
-            // Si el día de la clase es anterior al día actual, considerar la próxima clase en la siguiente semana
-            if (diaClase.getValue() < diaActual.getValue()) {
-                diaClase = diaClase.plus(7);
-            }
-
-            // Si el día de la clase es el mismo que el día actual o en el futuro
-            if (diaClase.getValue() == diaActual.getValue()) {
-                // Obtener la hora de inicio de la clase
-                // Crear un objeto DateTimeFormatter para el formato de hora actualizado
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
-
-                // Analizar la cadena utilizando el nuevo formato
-                LocalTime horaInicio = LocalTime.parse(clase.getHoraInicio(), formatter);
-
-                // Si la hora de inicio ya pasó hoy, considerar la próxima clase en la siguiente semana
-                if (horaInicio.isBefore(horaActual)) {
-                    diaClase = diaClase.plus(7);
-                    claseMasCercana = clase;
+        // Definir el comparador para ordenar por apellido y en caso de empate, por nombre,
+        // y en caso de otro empate, por la tercera posición
+        Comparator<String[]> ordenamientoAlfabetico = new Comparator<String[]>() {
+            @Override
+            public int compare(String[] nombre1, String[] nombre2) {
+                String[] apellidoNombre1 = nombre1[0].split(",");
+                String[] apellidoNombre2 = nombre2[0].split(",");
+                int comparacionApellido = apellidoNombre1[0].compareTo(apellidoNombre2[0]);
+                if (comparacionApellido == 0) {
+                    int comparacionNombre = apellidoNombre1[1].compareTo(apellidoNombre2[1]);
+                    if (comparacionNombre == 0) {
+                        return nombre1[2].compareTo(nombre2[2]);
+                    }
+                    return comparacionNombre;
                 }
-
-                // Calcular los minutos entre la hora actual y la hora de inicio de la clase
-                long minutos = horaActual.until(horaInicio, java.time.temporal.ChronoUnit.MINUTES);
-
-                // Si es la clase más cercana hasta ahora, actualizar los valores
-                if (claseMasCercana == null || minutos < minutosMasCercanos) {
-                    claseMasCercana = clase;
-                    minutosMasCercanos = minutos;
-                }
+                return comparacionApellido;
             }
-            if (claseMasCercana == null) {
-                claseMasCercana = clase;
-            }
-        }
+        };
 
-        // Si se encontró una clase cercana, devolver sus datos en un array de Strings
-        if (claseMasCercana != null) {
-            String[] resultado = new String[4];
-            resultado[0] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), profesor.getCursos()))[0];
-            resultado[1] = Objects.requireNonNull(buscarCursoPorClase(claseMasCercana.getAulaClase(), claseMasCercana.getDiaSemana(), claseMasCercana.getHoraInicio(), profesor.getCursos()))[1];
-            resultado[2] = claseMasCercana.getAulaClase();
-            resultado[3] = claseMasCercana.getHoraInicio() + " - " + claseMasCercana.getHoraFinal();
-            return resultado;
-        }
+        // Ordenar el LinkedList por apellido y en caso de empate, por nombre,
+        // y en caso de otro empate, por la tercera posición
+        Collections.sort(nombres, ordenamientoAlfabetico);
 
-        // Si no se encontró ninguna clase cercana, devolver null
-        return null;
+        // Devolver el LinkedList ordenado
+        return nombres;
     }
-
-    public static String[] buscarCursoPorClase(String aulaClase, String diaSemana, String horaInicio, Curso[] cursos) {
-        for (Curso curso : cursos) {
-            for (Clase clase : curso.getClases()) {
-                if (clase.getAulaClase().equals(aulaClase) && clase.getDiaSemana().equals(diaSemana) &&
-                        clase.getHoraInicio().equals(horaInicio)) {
-                    String[] datosCurso = new String[4];
-                    datosCurso[0] = curso.getNombreProfesor();
-                    datosCurso[1] = convertirCamelCaseATitulo(curso.getNombreCurso());
-                    datosCurso[2] = clase.getAulaClase();
-                    datosCurso[3] = clase.getHoraInicio() + " - " + clase.getHoraFinal();
-                    return datosCurso;
-                }
-            }
-        }
-        return null;
-    }
-    public static String convertirPalabra(String palabra) {
-        String resultado = "";
-        switch(palabra.toLowerCase()) {
-            case "lunes":
-                resultado = "Monday";
-                break;
-            case "martes":
-                resultado = "Tuesday";
-                break;
-            case "miércoles":
-                resultado = "Wednesday";
-                break;
-            case "jueves":
-                resultado = "Thursday";
-                break;
-            case "viernes":
-                resultado = "Friday";
-                break;
-            case "sábado":
-                resultado = "Saturday";
-                break;
-            case "domingo":
-                resultado = "Sunday";
-                break;
-            case "profesor":
-                resultado = "professor";
-                break;
-            case "curso":
-                resultado = "course";
-                break;
-            case "aula de clase":
-                resultado = "classroom";
-                break;
-            case "hora":
-                resultado = "hour";
-                break;
-            default:
-                resultado = palabra;
-                break;
-        }
-        return resultado;
-    }
-
 }
+
