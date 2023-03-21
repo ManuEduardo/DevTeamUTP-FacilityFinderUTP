@@ -56,6 +56,7 @@ public class ServicioSalonProfesor implements HttpHandler {
         // Se obtiene los datos del curso, el cual el profesor lo tiene más cercano.
         String[] cursoMasCercano = claseMasCercana(codigoProfesor, Clave.PROFESOR);
 
+        // Para un estudiante también se muestra el nombre del profesor
         String profesor = cursoMasCercano[0];
         String curso = cursoMasCercano[1];
         String sede = cursoMasCercano[2];
@@ -76,5 +77,29 @@ public class ServicioSalonProfesor implements HttpHandler {
         return informacionClase;
     }
 
+    public static void main(String[] args) throws IOException {
+        String[] cursoMasCercano = claseMasCercana("C23987", Clave.PROFESOR);
+
+        // Para un estudiante también se muestra el nombre del profesor
+        String profesor = cursoMasCercano[0];
+        String curso = cursoMasCercano[1];
+        String sede = cursoMasCercano[2];
+        String pabellon = cursoMasCercano[3];
+        String piso = cursoMasCercano[4];
+        String aula = cursoMasCercano[5];
+        String horario = cursoMasCercano[6];
+        String torre = pabellon;
+        String DiaSemana = cursoMasCercano[8];
+
+        System.out.println("profesor = " + profesor);
+        System.out.println("curso = " + curso);
+        System.out.println("sede = " + sede);
+        System.out.println("pabellon = " + pabellon);
+        System.out.println("piso = " + piso);
+        System.out.println("aula = " + aula);
+        System.out.println("horario = " + horario);
+        System.out.println("torre = " + torre);
+        System.out.println("DiaSemana = " + DiaSemana);
+    }
 
 }

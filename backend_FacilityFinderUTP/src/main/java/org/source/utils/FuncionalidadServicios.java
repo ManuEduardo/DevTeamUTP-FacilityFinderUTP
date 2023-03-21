@@ -202,22 +202,23 @@ public class FuncionalidadServicios {
             }
 
             // Obtención de la data.
-            dataMasCercano = new String[9];
+            dataMasCercano = new String[10];
 
             dataMasCercano[0] = estudiante.getNombre();
-            dataMasCercano[1] = cursoMasCercano.getNombreCurso();
-            dataMasCercano[2] = claseMasCercana.getAmbiente().getNombreSede();
+            dataMasCercano[1] = cursoMasCercano.getNombreProfesor();
+            dataMasCercano[2] = cursoMasCercano.getNombreCurso();
+            dataMasCercano[3] = claseMasCercana.getAmbiente().getNombreSede();
 
-            dataMasCercano[4] = claseMasCercana.getAmbiente().getTorreOrAV();
-            if (!dataMasCercano[4].equals("AV")){
-                dataMasCercano[3] = claseMasCercana.getAmbiente().getNombreSede().substring(1);
+            dataMasCercano[5] = claseMasCercana.getAmbiente().getTorreOrAV();
+            if (!dataMasCercano[5].equals("AV")){
+                dataMasCercano[4] = claseMasCercana.getAmbiente().getNombreSede().substring(1);
             }else {
-                dataMasCercano[3] = dataMasCercano[4];
+                dataMasCercano[4] = dataMasCercano[5];
             }
-            dataMasCercano[5] = claseMasCercana.getAmbiente().getAmbienteDeClase();
-            dataMasCercano[6] = claseMasCercana.getHorarioClase();
-            dataMasCercano[7] = dataMasCercano[3];
-            dataMasCercano[8] = claseMasCercana.getDiaSemana();
+            dataMasCercano[6] = claseMasCercana.getAmbiente().getAmbienteDeClase();
+            dataMasCercano[7] = claseMasCercana.getHorarioClase();
+            dataMasCercano[8] = dataMasCercano[4];
+            dataMasCercano[9] = claseMasCercana.getDiaSemana();
 
             return dataMasCercano;
         }

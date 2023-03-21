@@ -20,8 +20,8 @@ public class Constantes {
     /**
      * Rutas de archivo que representan la ubicación de dos archivos en el proyecto.:
      */
-    private static final Path CsvDataHorarios = Paths.get("src", "main", "java", "org", "source", "csvs", "DataHorarios.csv");
-    private static final Path ErrorLog = Paths.get("src", "main", "resources", "error.log");
+    private static final Path CsvDataHorarios = Paths.get("backend_FacilityFinderUTP","src", "main", "java", "org", "source", "csvs", "DataHorarios.csv");
+    private static final Path ErrorLog = Paths.get("backend_FacilityFinderUTP","src", "main", "resources", "error.log");
     public static String RutaCsvDataHorarios() {
         return CsvDataHorarios.toAbsolutePath().toString();
     }

@@ -70,19 +70,21 @@ public class ServicioSalonEstudiante implements HttpHandler {
         } catch (NullPointerException e) {
             Arrays.fill(cursoMasCercano, "no encontrado");
         }
-
-        String profesor = cursoMasCercano[0];
-        String curso = cursoMasCercano[1];
-        String sede = cursoMasCercano[2];
-        String pabellon = cursoMasCercano[3];
-        String piso = cursoMasCercano[4];
-        String aula = cursoMasCercano[5];
-        String horario = cursoMasCercano[6];
+        // Para un estudiante también se muestra el nombre del estudiante
+        String estudiante = cursoMasCercano[0];
+        String profesor = cursoMasCercano[1];
+        String curso = cursoMasCercano[2];
+        String sede = cursoMasCercano[3];
+        String pabellon = cursoMasCercano[4];
+        String piso = cursoMasCercano[5];
+        String aula = cursoMasCercano[6];
+        String horario = cursoMasCercano[7];
         String torre = pabellon;
-        String DiaSemana = cursoMasCercano[8];
+        String DiaSemana = cursoMasCercano[9];
 
 
         Map<String, Object> informacionClase = new HashMap<>();
+        informacionClase.put("estudiante", estudiante);
         informacionClase.put("profesor", profesor);
         informacionClase.put("curso", curso);
         informacionClase.put("sede",sede);
@@ -95,20 +97,23 @@ public class ServicioSalonEstudiante implements HttpHandler {
         return informacionClase;
     }
 
-/*    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         //Prueba
-        String[] cursoMasCercano = claseMasCercana("U22207603", Clave.ALUMNO);
+        String[] cursoMasCercano = claseMasCercana("U20303242", Clave.ALUMNO);
 
-        String profesor = cursoMasCercano[0];
-        String curso = cursoMasCercano[1];
-        String sede = cursoMasCercano[2];
-        String pabellon = cursoMasCercano[3];
-        String piso = cursoMasCercano[4];
-        String aula = cursoMasCercano[5];
-        String horario = cursoMasCercano[6];
+        // Para un estudiante también se muestra el nombre del estudiante
+        String estudiante = cursoMasCercano[0];
+        String profesor = cursoMasCercano[1];
+        String curso = cursoMasCercano[2];
+        String sede = cursoMasCercano[3];
+        String pabellon = cursoMasCercano[4];
+        String piso = cursoMasCercano[5];
+        String aula = cursoMasCercano[6];
+        String horario = cursoMasCercano[7];
         String torre = pabellon;
-        String DiaSemana = cursoMasCercano[8];
+        String DiaSemana = cursoMasCercano[9];
 
+        System.out.println("estudiante = " + estudiante);
         System.out.println("profesor = " + profesor);
         System.out.println("curso = " + curso);
         System.out.println("sede = " + sede);
@@ -118,5 +123,5 @@ public class ServicioSalonEstudiante implements HttpHandler {
         System.out.println("horario = " + horario);
         System.out.println("torre = " + torre);
         System.out.println("DiaSemana = " + DiaSemana);
-    }*/
+    }
 }
