@@ -6,6 +6,7 @@ export type InformacionClase = {
     curso: string;
     dia: string;
     sede: string;
+    alumno: string;
 }
 
 export const EmptyInformacionClase: InformacionClase = {
@@ -16,4 +17,5 @@ export const EmptyInformacionClase: InformacionClase = {
     curso: "",
     dia: "",
     sede: "",
+    alumno: "",
 }

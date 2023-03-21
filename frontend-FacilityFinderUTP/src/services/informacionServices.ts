@@ -14,6 +14,7 @@ export const getInformacionClaseFetch = async (codigo: string) => {
     curso: clase.curso,
     dia: clase.dia,
     sede: clase.sede,
+    alumno: clase.estudiante,
   };
   return infoClase;
   // const clase = await fetch(
