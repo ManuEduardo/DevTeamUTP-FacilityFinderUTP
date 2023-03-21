@@ -17,12 +17,12 @@
       >
         <tbody class=" w-full">
           <tr>
-            <td class=" font-bold p-2">Dia</td>
-            <td class=" text-right p-2">{$informacionClase.dia}</td>
-          </tr>
-          <tr>
             <td class=" font-bold p-2">Alumno</td>
             <td class=" text-right p-2">{$informacionClase.alumno}</td>
+          </tr>
+          <tr>
+            <td class=" font-bold p-2">Dia</td>
+            <td class=" text-right p-2">{$informacionClase.dia}</td>
           </tr>
           <tr>
             <td class=" font-bold p-2">Horario</td>
