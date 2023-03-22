@@ -77,8 +77,8 @@ public class ServicioSalonEstudiante implements HttpHandler {
         String profesor = cursoMasCercano[1];
         String curso = cursoMasCercano[2];
         String sede = cursoMasCercano[3];
-        String pabellon = cursoMasCercano[4];
-        String piso = cursoMasCercano[5];
+        String piso = cursoMasCercano[4];
+        String pabellon = cursoMasCercano[5];
         String aula = cursoMasCercano[6];
         String horario = cursoMasCercano[7];
         String torre = pabellon;

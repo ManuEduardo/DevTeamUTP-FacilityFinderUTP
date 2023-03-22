@@ -130,20 +130,21 @@ public class FuncionalidadServicios {
             // Obtención de la data.
             dataMasCercano = new String[9];
 
-            dataMasCercano[0] = profesor.getNombre();
+            dataMasCercano[0] = cursoMasCercano.getNombreProfesor();
             dataMasCercano[1] = cursoMasCercano.getNombreCurso();
             dataMasCercano[2] = claseMasCercana.getAmbiente().getNombreSede();
 
             dataMasCercano[4] = claseMasCercana.getAmbiente().getTorreOrAV();
             if (!dataMasCercano[4].equals("AV")){
-                dataMasCercano[3] = claseMasCercana.getAmbiente().getNombreSede().substring(1);
+                dataMasCercano[3] = claseMasCercana.getAmbiente().getAmbienteDeClase().substring(0,2);
             }else {
                 dataMasCercano[3] = dataMasCercano[4];
             }
             dataMasCercano[5] = claseMasCercana.getAmbiente().getAmbienteDeClase();
             dataMasCercano[6] = claseMasCercana.getHorarioClase();
-            dataMasCercano[7] = dataMasCercano[3];
+            dataMasCercano[7] = dataMasCercano[4];
             dataMasCercano[8] = claseMasCercana.getDiaSemana();
+
 
             return dataMasCercano;
 
@@ -212,7 +213,7 @@ public class FuncionalidadServicios {
 
             dataMasCercano[5] = claseMasCercana.getAmbiente().getTorreOrAV();
             if (!dataMasCercano[5].equals("AV")){
-                dataMasCercano[4] = claseMasCercana.getAmbiente().getAmbienteDeClase().substring(1);
+                dataMasCercano[4] = claseMasCercana.getAmbiente().getAmbienteDeClase().substring(0,2);
             }else {
                 dataMasCercano[4] = dataMasCercano[5];
             }
