@@ -8,12 +8,8 @@ Mira **Deployment** para conocer como desplegar el proyecto.
 
 ### Pre-requisitos 
 
-_Que cosas necesitas para instalar el software y como instalarlas_
-
-```
-Java17 Jdk 17
-Node.js 10.24.1
-```
+- **Java17 Jdk 17**:
+- **Node.js 10.24.1**:
 
 ## Dependencias
 
