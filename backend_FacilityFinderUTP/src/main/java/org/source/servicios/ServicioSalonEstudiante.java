@@ -9,6 +9,7 @@ import org.source.utils.QueryToMap;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +57,7 @@ public class ServicioSalonEstudiante implements HttpHandler {
         }else{
             exchange.sendResponseHeaders(200, json.getBytes().length);
         }
-        exchange.getResponseBody().write(json.getBytes(StandardCharsets.UTF_8));
+        exchange.getResponseBody().write(json.getBytes());
         exchange.getResponseBody().close();
     }
 
@@ -85,18 +86,28 @@ public class ServicioSalonEstudiante implements HttpHandler {
 
 
         Map<String, Object> informacionClase = new HashMap<>();
-        informacionClase.put("estudiante", estudiante);
-        informacionClase.put("profesor", profesor);
-        informacionClase.put("curso", curso);
-        informacionClase.put("sede",sede);
-        informacionClase.put("pabellon", pabellon);
-        informacionClase.put("piso", piso);
-        informacionClase.put("aula", aula);
-        informacionClase.put("horario", horario);
-        informacionClase.put("torre", torre);
-        informacionClase.put("dia", DiaSemana);
+        informacionClase.put("estudiante", quitarTildes(estudiante));
+        informacionClase.put("profesor", quitarTildes(profesor));
+        informacionClase.put("curso", quitarTildes(curso));
+        informacionClase.put("sede",quitarTildes(sede));
+        informacionClase.put("pabellon", quitarTildes(pabellon));
+        informacionClase.put("piso", quitarTildes(piso));
+        informacionClase.put("aula", quitarTildes(aula));
+        informacionClase.put("horario", quitarTildes(horario));
+        informacionClase.put("torre", quitarTildes(torre));
+        informacionClase.put("dia", quitarTildes(DiaSemana));
         return informacionClase;
     }
+
+    public static String quitarTildes(String palabraConTilde) {
+        String palabraSinTilde = Normalizer.normalize(palabraConTilde, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+        return palabraSinTilde.replaceAll("ñ", "n").replaceAll("Ñ", "N")
+                .replaceAll("[á|à|ä|â|Á|À|Ä|Â]", "a").replaceAll("[é|è|ë|ê|É|È|Ë|Ê]", "e")
+                .replaceAll("[í|ì|ï|î|Í|Ì|Ï|Î]", "i").replaceAll("[ó|ò|ö|ô|Ó|Ò|Ö|Ô]", "o")
+                .replaceAll("[ú|ù|ü|û|Ú|Ù|Ü|Û]", "u");
+    }
+
 /*
     public static void main(String[] args) throws IOException {
         //Prueba
