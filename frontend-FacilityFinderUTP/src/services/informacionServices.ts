@@ -1,6 +1,6 @@
 export const getInformacionClaseFetch = async (codigo: string) => {
   const clase = await fetch(
-    `http://localhost:8000/estudiante?codigo=${codigo.toUpperCase()}`
+    `http://31.220.53.207:8000/estudiante?codigo=${codigo.toUpperCase()}`
   ).then((response) => response.json());
   if (clase.pabellon == "no encontrado") {
     clase.pabellon = "";
