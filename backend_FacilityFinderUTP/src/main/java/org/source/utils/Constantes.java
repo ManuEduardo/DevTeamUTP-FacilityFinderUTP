@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.source.utils.Rutas.getRutaCsv;
+
 /**
  * Esta es la descripción de la clase Constantes:
  * @author Gabriel Paiva
@@ -18,22 +20,10 @@ import java.util.Map;
 public class Constantes {
 
     /**
-     * Rutas de archivo que representan la ubicación de dos archivos en el proyecto.:
-     */
-    private static final Path CsvDataHorarios = Paths.get("src", "main", "java", "org", "source", "csvs", "DataHorarios.csv");
-    private static final Path ErrorLog = Paths.get("src", "main", "resources", "error.log");
-    public static String RutaCsvDataHorarios() {
-        return CsvDataHorarios.toAbsolutePath().toString();
-    }
-    public static String RutaErrorLog() {
-        return ErrorLog.toAbsolutePath().toString();
-    }
-
-    /**
      * Creación de un objeto de la clase LecturaCsv utilizando el método RutaCsvDataHorarios()
      * para obtener la ruta del archivo CSV que se utilizará para la lectura.
      */
-    private static LecturaCsv lecturaCsv = new LecturaCsv(RutaCsvDataHorarios());
+    private static LecturaCsv lecturaCsv = new LecturaCsv(getRutaCsv());
 
     /**
      * Obtenermos la data, como es algo que está en una "base de datos" csv, entonces

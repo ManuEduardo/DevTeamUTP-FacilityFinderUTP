@@ -1,6 +1,7 @@
 package org.source.Validaciones;
 
 import org.source.utils.Constantes;
+import org.source.utils.Rutas;
 import org.source.utils.TextUTP;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class ErrorLog {
 
     /** Constantes. */
     public enum Level {INFO, WARN, ERROR}; // Creamos un enum para especificar el típo de error.
-    private final String filename = Constantes.RutaErrorLog(); // Creamos la clase privada String filename.
+    private final String filename = Rutas.getRutaLog(); // Creamos la clase privada String filename.
 
     /** Constructor. */
     public ErrorLog() {

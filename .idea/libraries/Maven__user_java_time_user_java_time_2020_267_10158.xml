@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: user.java.time:user.java.time:2020.267.10158">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/user/java/time/user.java.time/2020.267.10158/user.java.time-2020.267.10158.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/user/java/time/user.java.time/2020.267.10158/user.java.time-2020.267.10158-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/user/java/time/user.java.time/2020.267.10158/user.java.time-2020.267.10158-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
