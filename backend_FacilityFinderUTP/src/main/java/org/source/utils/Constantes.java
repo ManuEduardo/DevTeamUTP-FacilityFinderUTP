@@ -1,4 +1,5 @@
 package org.source.utils;
+import org.source.Main;
 import org.source.modelos.Estudiante;
 import org.source.modelos.Profesor;
 
@@ -7,8 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.source.utils.Rutas.getRutaCsv;
 
 /**
  * Esta es la descripción de la clase Constantes:
@@ -20,10 +19,25 @@ import static org.source.utils.Rutas.getRutaCsv;
 public class Constantes {
 
     /**
+     * Rutas de archivo que representan la ubicación de dos archivos en el proyecto.:
+     */
+    private static final String nombreCarpetaData = "csvs";
+    private static final String nombreArchivoDataHorarios = "csvs/DataHorarios.csv";
+    private static final String nombreCarpetaErrorLog = "";
+    private static final String nombreArchivoErrorLog = "error.log";
+    private static final Path ErrorLog = Paths.get("src", "main", "resources", "error.log");
+    public static String RutaCsvDataHorarios() {
+        return String.format("%s%s%s%s%s",Main.getDirectorioRecursos(),Main.getSeparador(),nombreCarpetaData,Main.getSeparador(),nombreArchivoDataHorarios);
+    }
+    public static String RutaErrorLog() {
+        return String.format("%s%s%s%s%s",Main.getDirectorioRecursos(),Main.getSeparador(),nombreArchivoErrorLog,Main.getSeparador(),nombreArchivoErrorLog);
+    }
+
+    /**
      * Creación de un objeto de la clase LecturaCsv utilizando el método RutaCsvDataHorarios()
      * para obtener la ruta del archivo CSV que se utilizará para la lectura.
      */
-    private static LecturaCsv lecturaCsv = new LecturaCsv(getRutaCsv());
+    private static LecturaCsv lecturaCsv = new LecturaCsv(RutaCsvDataHorarios());
 
     /**
      * Obtenermos la data, como es algo que está en una "base de datos" csv, entonces
