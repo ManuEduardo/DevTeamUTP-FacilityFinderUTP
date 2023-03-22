@@ -11,17 +11,23 @@ Mira **Deployment** para conocer como desplegar el proyecto.
 _Que cosas necesitas para instalar el software y como instalarlas_
 
 ```
-Da un ejemplo
+Java17 Jdk 17
+Node.js 10.24.1
 ```
 
 ## Dependencias
 
+- **TypeScript 5.0.2**: TypeScript es un superconjunto de JavaScript que permite escribir y generar código de JavaScript que opera de manera fuertemente tipada y orientada a objetos.
+- **svelte**: Es un compilador de JavaScript que está diseñado para crear interface de usuario de alto rendimiento.
+- **Tailwind CSS v3.0**: Tailwind CSS es una potente herramienta para el desarrollo frontend, permite a los desarrolladores y diseñadores aplicar estilos a los sitios web de una manera ágil y optimizada..
 - **gson**: es una biblioteca de Java que se utiliza para convertir objetos de Java a su representación JSON y viceversa.
 - **opencsv**: es una biblioteca de Java que se utiliza para leer y escribir archivos CSV.
 - **user.java.time**: es una biblioteca de Java que proporciona las clases de fecha y hora de Java 8.
 
+
 ## Instalación
 
+### backend
 Para agregar estas dependencias a un proyecto Maven, debe agregar las siguientes líneas a su archivo `pom.xml` dentro de la sección `dependencies`:
 
 ```xml
@@ -54,17 +60,48 @@ Además, para poder descargar las dependencias desde sus respectivos repositorio
 
 Una vez agregadas estas líneas en el archivo `pom.xml`, se pueden instalar las dependencias utilizando el comando `mvn install`.
 
+### frontend
+Te ubicas en el sub_proyecto Front
+```console
+    npm install
+    npm run dev
+```
 ## Ejecutando las pruebas ⚙️
 
 _Explica como ejecutar las pruebas automatizadas para este sistema_
-
+```http
+http://localhost:8000/estudiante?codigo=U20303242
+```
+```json
+{
+estudiante: "SANCHEZ SUYON,MANUEL EDUARDO",
+piso: "AV",
+aula: "055",
+horario: "08:00 - 10:15",
+curso: "PROBLEMAS Y DESAFIOS EN EL PERU ACTUAL",
+sede: "Chiclayo",
+profesor: "VELIZ LLUNCOR,OSCAR EDUARDO",
+torre: "AV",
+dia: "AV",
+pabellon: "AV"
+}
+```
 ## Despliegue 📦
 
-_Agrega notas adicionales sobre como hacer deploy_
+### Front
+Para copilar a html, css, javascrip
+```console
+    npm run build
+```
+Se crea la carpeta dist en el cual se encuentra el html, css, JavaScrip e imagenes
+
+### Back
+en proceso
+IntelliJ IDEA
 
 ## Construido con 🛠️
 
-* Agregar...
+* [Svelte](https://svelte.dev/) - Compilador Front
 * [Maven](https://maven.apache.org/) - Manejador de dependencias
 
 ## Versionado 📌
@@ -73,9 +110,9 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 
 ## Autores ✒️
 
-* **Ingresa su info aquí** - *Trabajo Inicial* - [villanuevand](https://github.com/villanuevand)
-* **Ingresa su info aquí** - *Trabajo Inicial* - [villanuevand](https://github.com/villanuevand)
-* **Gabriel Paiva** - *Backend* - [DevGitGabo](https://github.com/DevGitGabo)
+* **Manuel Eduardo Sánchez Suyón** - *Frontend* - [ManuEduardo](https://github.com/ManuEduardo)
+* **Gabriel Antonio Paiva Quispe** - *Backend* - [DevGitGabo](https://github.com/DevGitGabo)
+* **Silvia Carolina Sánchez Suyón** - *Design* - [moldenitrogeno](https://github.com/moldenitrogeno)
 
 ## Licencia 📄
 
