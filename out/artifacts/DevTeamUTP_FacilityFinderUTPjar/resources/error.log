@@ -1,5 +1,0 @@
-2023-03-18 06::00::16 - ERROR - ProcesarCsv - Cannot invoke "String.equals(Object)" because "arrayAnterior[i]" is null
-2023-03-18 06::00::30 - ERROR - ProcesarCsv - Cannot invoke "String.equals(Object)" because "arrayAnterior[i]" is null
-2023-03-18 06::01::12 - ERROR - ProcesarCsv - Cannot invoke "String.equals(Object)" because "arrayAnterior[i]" is null
-2023-03-18 06::01::42 - ERROR - ProcesarCsv - Cannot invoke "String.equals(Object)" because "arrayAnterior[i]" is null
-2023-03-18 06::02::56 - ERROR - ProcesarCsv - Cannot invoke "String.equals(Object)" because "arrayAnterior[i]" is null
