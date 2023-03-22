@@ -96,7 +96,7 @@ public class ServicioSalonEstudiante implements HttpHandler {
         informacionClase.put("dia", DiaSemana);
         return informacionClase;
     }
-
+/*
     public static void main(String[] args) throws IOException {
         //Prueba
         String[] cursoMasCercano = claseMasCercana("U20303242", Clave.ALUMNO);
@@ -123,5 +123,5 @@ public class ServicioSalonEstudiante implements HttpHandler {
         System.out.println("horario = " + horario);
         System.out.println("torre = " + torre);
         System.out.println("DiaSemana = " + DiaSemana);
-    }
+    }*/
 }

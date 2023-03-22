@@ -76,7 +76,7 @@ public class ServicioSalonProfesor implements HttpHandler {
         informacionClase.put("torre", torre);
         return informacionClase;
     }
-
+/*
     public static void main(String[] args) throws IOException {
         String[] cursoMasCercano = claseMasCercana("C23987", Clave.PROFESOR);
 
@@ -101,5 +101,5 @@ public class ServicioSalonProfesor implements HttpHandler {
         System.out.println("torre = " + torre);
         System.out.println("DiaSemana = " + DiaSemana);
     }
-
+*/
 }
