@@ -22,7 +22,7 @@ public class Constantes {
      * Rutas de archivo que representan la ubicación de dos archivos en el proyecto.:
      */
     private static final String nombreCarpetaData = "csvs";
-    private static final String nombreArchivoDataHorarios = "csvs/DataHorarios.csv";
+    private static final String nombreArchivoDataHorarios = "DataHorarios.csv";
     private static final String nombreCarpetaErrorLog = "";
     private static final String nombreArchivoErrorLog = "error.log";
     private static final Path ErrorLog = Paths.get("src", "main", "resources", "error.log");
