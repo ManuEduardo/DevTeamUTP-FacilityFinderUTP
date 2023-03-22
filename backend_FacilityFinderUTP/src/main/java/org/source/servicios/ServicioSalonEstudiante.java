@@ -80,7 +80,7 @@ public class ServicioSalonEstudiante implements HttpHandler {
         String aula = cursoMasCercano[6];
         String horario = cursoMasCercano[7];
         String torre = pabellon;
-        String DiaSemana = cursoMasCercano[9];
+        String DiaSemana = cursoMasCercano[8];
 
 
         Map<String, Object> informacionClase = new HashMap<>();
