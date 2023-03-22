@@ -1,5 +1,6 @@
 package org.source.modelos;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -15,6 +16,12 @@ import java.util.HashSet;
  */
 
 public class Profesor extends PersonaUniversitaria{
+    @Override
+    public String toString() {
+        return "Profesor{" +
+                "cursos=" + Arrays.toString(cursos) +
+                '}';
+    }
 
     /** Atributos de la clase Profesor. */
     private Curso[] cursos; //Cursos que imparte el profesor.

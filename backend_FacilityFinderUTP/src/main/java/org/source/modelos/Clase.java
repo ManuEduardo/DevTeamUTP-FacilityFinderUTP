@@ -14,6 +14,15 @@ package org.source.modelos;
  */
 
 public class Clase {
+    @Override
+    public String toString() {
+        return "Clase{" +
+                "DiaSemana='" + DiaSemana + '\'' +
+                ", HoraInicio='" + HoraInicio + '\'' +
+                ", HoraFinal='" + HoraFinal + '\'' +
+                ", ambiente=" + ambiente +
+                '}';
+    }
 
     /** Atributos. */
     private String DiaSemana; // Dia de la semana en el cual se imparte la clase.

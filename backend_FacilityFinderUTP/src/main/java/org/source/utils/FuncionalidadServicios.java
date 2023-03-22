@@ -185,6 +185,7 @@ public class FuncionalidadServicios {
                     // [3] = Distancia entre minutos minima.
 
                     comparadorCursos[0] = distanciaDiaDeClase(DiaSemanaClase);
+
                     comparadorCursos[1] = calcularMinutosHastaLlegada(HoraActual, HoraInicio, comparadorCursos[0]);
 
                     if (comparadorCursos[1] <= comparadorCursos[3]) {
@@ -211,7 +212,7 @@ public class FuncionalidadServicios {
 
             dataMasCercano[5] = claseMasCercana.getAmbiente().getTorreOrAV();
             if (!dataMasCercano[5].equals("AV")){
-                dataMasCercano[4] = claseMasCercana.getAmbiente().getNombreSede().substring(1);
+                dataMasCercano[4] = claseMasCercana.getAmbiente().getAmbienteDeClase().substring(1);
             }else {
                 dataMasCercano[4] = dataMasCercano[5];
             }

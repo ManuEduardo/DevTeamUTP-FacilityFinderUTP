@@ -7,6 +7,13 @@ package org.source.modelos;
  */
 
 public abstract class PersonaUniversitaria {
+    @Override
+    public String toString() {
+        return "PersonaUniversitaria{" +
+                "nombre='" + nombre + '\'' +
+                ", codigo='" + codigo + '\'' +
+                '}';
+    }
 
     /** Atributos de la clase PersonaUniversitaria. */
     private String nombre; /* Nombre de la persona universitaria */

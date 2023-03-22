@@ -1,4 +1,5 @@
 package org.source.modelos;
+import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -13,6 +14,12 @@ import java.util.HashSet;
  */
 
 public class Estudiante extends PersonaUniversitaria{
+    @Override
+    public String toString() {
+        return "Estudiante{" +
+                "cursos=" + Arrays.toString(cursos) +
+                '}';
+    }
 
     /** Atributos. */
     private Curso[] cursos; // Cursos que lleva el alumno.

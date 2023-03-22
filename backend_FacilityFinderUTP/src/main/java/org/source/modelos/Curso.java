@@ -1,5 +1,7 @@
 package org.source.modelos;
 
+import java.util.Arrays;
+
 /**
  * Esta es la descripción de la clase Curso:
  * La clase Curso es una representación de un curso que se desarrolla en una
@@ -12,6 +14,14 @@ package org.source.modelos;
  */
 
 public class Curso {
+    @Override
+    public String toString() {
+        return "Curso{" +
+                "NombreCurso='" + NombreCurso + '\'' +
+                ", nombreProfesor='" + nombreProfesor + '\'' +
+                ", clases=" + Arrays.toString(clases) +
+                '}';
+    }
 
     /** Atributos. */
     private String NombreCurso; // Nombre del curso que se desarrolla.

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -44,7 +45,7 @@ public class Constantes {
      * segundo la data de los profesores. Finalmente, convertiremos de clase Object a la
      * clase que corresponde, o profesor o estudiante.
      */
-    private static ProcesarCsv totalData = new ProcesarCsv(lecturaCsv.leer()); // Constructor de la clase ProcesarCsv
+    private static ProcesarCsv totalData = new ProcesarCsv((LinkedList<String[]>) lecturaCsv.leer()); // Constructor de la clase ProcesarCsv
     public static HashMap <String,Object>[] dataProcesada() throws IOException {
         return totalData.createData();
     }
