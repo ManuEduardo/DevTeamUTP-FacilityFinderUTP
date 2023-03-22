@@ -25,12 +25,11 @@ public class Constantes {
     private static final String nombreArchivoDataHorarios = "DataHorarios.csv";
     private static final String nombreCarpetaErrorLog = "";
     private static final String nombreArchivoErrorLog = "error.log";
-    private static final Path ErrorLog = Paths.get("src", "main", "resources", "error.log");
     public static String RutaCsvDataHorarios() {
         return String.format("%s%s%s%s%s",Main.getDirectorioRecursos(),Main.getSeparador(),nombreCarpetaData,Main.getSeparador(),nombreArchivoDataHorarios);
     }
     public static String RutaErrorLog() {
-        return String.format("%s%s%s%s%s",Main.getDirectorioRecursos(),Main.getSeparador(),nombreArchivoErrorLog,Main.getSeparador(),nombreArchivoErrorLog);
+        return String.format("%s%s%s%s%s",Main.getDirectorioRecursos(),Main.getSeparador(),nombreCarpetaErrorLog,Main.getSeparador(),nombreArchivoErrorLog);
     }
 
     /**
