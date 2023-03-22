@@ -8,6 +8,7 @@ import org.source.utils.Clave;
 import org.source.utils.QueryToMap;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class ServicioSalonEstudiante implements HttpHandler {
         }else{
             exchange.sendResponseHeaders(200, json.getBytes().length);
         }
-        exchange.getResponseBody().write(json.getBytes());
+        exchange.getResponseBody().write(json.getBytes(StandardCharsets.UTF_8));
         exchange.getResponseBody().close();
     }
 
