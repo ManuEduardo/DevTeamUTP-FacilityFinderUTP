@@ -92,8 +92,24 @@ Para copilar a html, css, javascrip
 Se crea la carpeta dist en el cual se encuentra el html, css, JavaScrip e imagenes
 
 ### Back
-en proceso
-IntelliJ IDEA
+
+Desde el servidor LINUX:
+
+Se nesecita tener creada una carpeta llamada resources, en la cual estarán el archivo .log y otra carpeta llamada csvs donde se encontrará el CSV en ISO_8859_1.
+El jar debe estar en el directorio en el cual se encuentra resources.
+
+antes de ejecutar el jar, es nesesario para que el servidor Linux pueda leer correctamente los caracteres especiales en el archivo CSV. Puedes hacerlo ejecutando el siguiente comando en la terminal del servidor Linux:
+
+```
+export LC_ALL=en_US.UTF-8
+```
+
+ahora ejecutamos el jar de la siguiente manera:
+
+```
+java -jar DevTeamUTP-FacilityFinderUTPfinal.jar -r ./resources/
+```
+LOS ARCHIVOS SE PUEDEN DESCARGAR EN LA CARPETA `DevTeamUTP_FacilityFinderUTPjar` DENTRO DEL MISMO GITHUB
 
 ## Construido con 🛠️
 
