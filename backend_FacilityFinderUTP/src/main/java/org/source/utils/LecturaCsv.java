@@ -1,7 +1,8 @@
 package org.source.utils;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -39,26 +40,26 @@ import java.util.List;
          * @return una lista enlazada que contiene sólo los campos de interés.
          */
         public List<String[]> leer() {
+
             List<String[]> arrayCsv = new LinkedList<>();
             try {
-                // Abrir el archivo csv en buffer de lectura
-                BufferedReader bufferLectura = Files.newBufferedReader(Paths.get(urlCsv), StandardCharsets.UTF_8);
 
-                // Leer una linea del archivo
-                String linea = bufferLectura.readLine();
 
-                // La primera linea del csv no es data, son los nombres de las filas del csv. Por ello la pasamos.
-                linea = bufferLectura.readLine();
 
-                while (linea != null) {
-                    String[] campos = linea.split(SEPARADOR);
-                    // En este caso Solo almacenar las variables que usaremos.
+                List<String> data = TextUTP.readlines(urlCsv, TextUTP.ENCONDING.ISO_8859_1, TextUTP.ENCONDING.UTF_8);
 
+                int contador = 0;
+
+                for (String elemento : data) {
+                    // La primera linea del csv no es data, son los nombres de las filas del csv. Por ello la pasamos.
+                    if (contador != 0){
+                    String[] campos = elemento.split(SEPARADOR);
                     String[] FiltroCampos = new String[]{campos[4], campos[6], campos[28], campos[33], campos[41], campos[42], campos[43], campos[44], campos[45]};
                     arrayCsv.add(FiltroCampos);
-                    // Volver a leer otra línea del fichero
-                    linea = bufferLectura.readLine();
+                    }
+                    contador++;
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

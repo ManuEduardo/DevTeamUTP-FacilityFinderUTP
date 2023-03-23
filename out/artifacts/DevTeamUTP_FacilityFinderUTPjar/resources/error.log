@@ -3,3 +3,5 @@
 2023-03-18 06::01::12 - ERROR - ProcesarCsv - Cannot invoke "String.equals(Object)" because "arrayAnterior[i]" is null
 2023-03-18 06::01::42 - ERROR - ProcesarCsv - Cannot invoke "String.equals(Object)" because "arrayAnterior[i]" is null
 2023-03-18 06::02::56 - ERROR - ProcesarCsv - Cannot invoke "String.equals(Object)" because "arrayAnterior[i]" is null
+2023-03-22 11::32::25 - ERROR - ProcesarCsv - Excepción en el código: El código CodUTP es inválido.
+2023-03-22 11::41::20 - ERROR - ProcesarCsv - Excepción en el código: El código CodUTP es inválido.

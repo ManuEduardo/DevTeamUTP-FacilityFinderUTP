@@ -86,7 +86,18 @@ public class ServicioSalonEstudiante implements HttpHandler {
 
 
         Map<String, Object> informacionClase = new HashMap<>();
-        informacionClase.put("estudiante", quitarTildes(estudiante));
+        informacionClase.put("estudiante", estudiante);
+        informacionClase.put("profesor", profesor);
+        informacionClase.put("curso", curso);
+        informacionClase.put("sede",sede);
+        informacionClase.put("pabellon", pabellon);
+        informacionClase.put("piso", piso);
+        informacionClase.put("aula", aula);
+        informacionClase.put("horario", horario);
+        informacionClase.put("torre", torre);
+        informacionClase.put("dia", DiaSemana);        
+
+        /*informacionClase.put("estudiante", quitarTildes(estudiante));
         informacionClase.put("profesor", quitarTildes(profesor));
         informacionClase.put("curso", quitarTildes(curso));
         informacionClase.put("sede",quitarTildes(sede));
@@ -95,7 +106,8 @@ public class ServicioSalonEstudiante implements HttpHandler {
         informacionClase.put("aula", quitarTildes(aula));
         informacionClase.put("horario", quitarTildes(horario));
         informacionClase.put("torre", quitarTildes(torre));
-        informacionClase.put("dia", quitarTildes(DiaSemana));
+        informacionClase.put("dia", quitarTildes(DiaSemana));*/
+
         return informacionClase;
     }
 
