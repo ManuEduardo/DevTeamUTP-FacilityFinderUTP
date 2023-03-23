@@ -79,6 +79,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        // Si quiero ejecutarlo desde mi PC personal y no desde el servidor LINUX
+        // System.getProperty("UTF-8");
+
         try {
             crearOpciones();
             directorioRaiz = obtenerDirectorioRecursos(args);
