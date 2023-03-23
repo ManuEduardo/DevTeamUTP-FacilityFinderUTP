@@ -109,7 +109,7 @@ ahora ejecutamos el jar de la siguiente manera:
 ```
 java -jar DevTeamUTP-FacilityFinderUTPfinal.jar -r ./resources/
 ```
-LOS ARCHIVOS SE PUEDEN DESCARGAR EN LA CARPETA DENTRO DEL MISMO GITHUB
+LOS ARCHIVOS SE PUEDEN DESCARGAR EN LA CARPETA `DevTeamUTP_FacilityFinderUTPjar` DENTRO DEL MISMO GITHUB
 
 ## Construido con 🛠️
 
